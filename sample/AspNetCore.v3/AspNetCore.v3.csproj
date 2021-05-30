@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Extensions.Configuration\Mimp.SeeSharper.DependencyInjection.Extensions.Configuration.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection\Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection.csproj" />
+    <ProjectReference Include="..\ServiceLibrary\ServiceLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

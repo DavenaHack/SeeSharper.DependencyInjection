@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;netstandard2.1;net48;net461</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="nullable">
+    <Nullable>enable</Nullable>
+    <DefineConstants Condition="'$(TargetFramework)' != 'netcoreapp2.1' and '$(TargetFramework)' != 'net48' and '$(TargetFramework)' != 'net461'">NullableAttributes;true</DefineConstants>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="[2.1.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.TypeProvider" Version="[1.0.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.TypeProvider.Abstraction" Version="[1.0.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.TypeResolver.Abstraction" Version="[1.0.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.TypeResolver.Provide" Version="[1.0.0,]" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Abstraction\Mimp.SeeSharper.DependencyInjection.Abstraction.csproj" />
+    <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Instantiation\Mimp.SeeSharper.DependencyInjection.Instantiation.csproj" />
+    <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Scope\Mimp.SeeSharper.DependencyInjection.Scope.csproj" />
+    <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Singleton\Mimp.SeeSharper.DependencyInjection.Singleton.csproj" />
+    <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Tag.Abstraction\Mimp.SeeSharper.DependencyInjection.Tag.Abstraction.csproj" />
+    <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Transient\Mimp.SeeSharper.DependencyInjection.Transient.csproj" />
+  </ItemGroup>
+
+</Project>

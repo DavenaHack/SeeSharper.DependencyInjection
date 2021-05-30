@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup Label="nullable">
+    <Nullable>enable</Nullable>
+    <DefineConstants Condition="'$(TargetFramework)' != 'netcoreapp2.1' and '$(TargetFramework)' != 'net48' and '$(TargetFramework)' != 'net461'">NullableAttributes;true</DefineConstants>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <PackageReference Include="MSTest.TestAdapter" Version="2.1.1" />
+    <PackageReference Include="MSTest.TestFramework" Version="2.1.1" />
+    <PackageReference Include="coverlet.collector" Version="1.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Abstraction\Mimp.SeeSharper.DependencyInjection.Abstraction.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Enumerable\Mimp.SeeSharper.DependencyInjection.Enumerable.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Instantiation\Mimp.SeeSharper.DependencyInjection.Instantiation.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Scope.Abstraction\Mimp.SeeSharper.DependencyInjection.Scope.Abstraction.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Scope\Mimp.SeeSharper.DependencyInjection.Scope.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Singleton\Mimp.SeeSharper.DependencyInjection.Singleton.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Tag.Abstraction\Mimp.SeeSharper.DependencyInjection.Tag.Abstraction.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Tag\Mimp.SeeSharper.DependencyInjection.Tag.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Transient\Mimp.SeeSharper.DependencyInjection.Transient.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection\Mimp.SeeSharper.DependencyInjection.csproj" />
+  </ItemGroup>
+
+</Project>

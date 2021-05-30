@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Extensions.Configuration\Mimp.SeeSharper.DependencyInjection.Extensions.Configuration.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection\Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection.csproj" />
+    <ProjectReference Include="..\ServiceLibrary\ServiceLibrary.csproj" />
+  </ItemGroup>
+
+</Project>

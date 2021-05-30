@@ -1,0 +1,30 @@
+{
+  "sources": [
+    {
+      "scopes": [ "scope2" ],
+      "dependencies": [
+        {
+          "type": "BarService",
+          "lifetime": "singleton",
+          "types": [
+            "IBarService"
+          ],
+          "instantiate": {
+            "bar": "bar2"
+          }
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "type": "IFooService",
+      "lifetime": "scope",
+      "scopes": [ "scope2" ],
+      "instantiate": {
+        "$type": "FooService",
+        "foo": "foo2"
+      }
+    }
+  ]
+}
