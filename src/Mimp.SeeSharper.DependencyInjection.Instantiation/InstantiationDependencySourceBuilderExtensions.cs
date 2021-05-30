@@ -116,48 +116,6 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
                 return instantiators;
             });
 
-            IEnumerable<IInstantiator> AddDefaults(IInstantiator root)
-            {
-                yield return new TypeInstantiator(typeResolver);
-
-                var secondRoot = new TryThrowInstantiator(instantiator => new IInstantiator[] {
-                    new DependencyInjectionInstantiator(provider, tagKey),
-                    root
-                });
-
-                yield return new NullableInstantiator(secondRoot);
-                yield return new BigIntegerInstantiator();
-                yield return new BoolInstantiator();
-                yield return new ByteInstantiator();
-                yield return new CharInstantiator();
-                yield return new DateTimeInstantiator();
-                yield return new DecimalInstantiator();
-                yield return new DoubleInstantiator();
-                yield return new FloatInstantiator();
-                yield return new IntInstantiator();
-                yield return new LongInstantiator();
-                yield return new SByteInstantiator();
-                yield return new ShortInstantiator();
-                yield return new StringInstantiator();
-                yield return new TimeSpanInstantiator();
-                yield return new UIntInstantiator();
-                yield return new ULongInstantiator();
-                yield return new UShortInstantiator();
-                yield return new EnumInstantiator();
-                yield return new KeyValuePairInstantiator(secondRoot);
-
-                var constructorInstantiator = new ConstructorInstantiator(secondRoot);
-
-                yield return new DictionaryInstantiator(constructorInstantiator, secondRoot);
-                yield return new ListInstantiator(constructorInstantiator, secondRoot);
-                yield return new SetInstantiator(constructorInstantiator, secondRoot);
-                yield return new CollectionInstantiator(constructorInstantiator, secondRoot);
-                yield return new EnumerableInstantiator(constructorInstantiator, secondRoot);
-
-                yield return new MemberInstantiator(constructorInstantiator, secondRoot);
-            }
-            builder.Add(AddDefaults);
-
             afterAddDefaults?.Invoke(builder);
 
             return builder.Build();
