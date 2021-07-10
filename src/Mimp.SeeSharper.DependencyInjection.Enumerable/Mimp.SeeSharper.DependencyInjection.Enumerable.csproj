@@ -11,13 +11,21 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Mimp.SeeSharper.Reflection" Version="[1.0.0,]" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ProjectReference Include="..\..\libs\Reflection\src\Mimp.SeeSharper.Reflection\Mimp.SeeSharper.Reflection.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Abstraction\Mimp.SeeSharper.DependencyInjection.Abstraction.csproj" />
     <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection\Mimp.SeeSharper.DependencyInjection.csproj" />
   </ItemGroup>
+
+  <Target Name="BuildDependencies" Condition="'$(Configuration)' == 'Debug'" BeforeTargets="BuildLink">
+    <Exec Command="dotnet build '..\..\libs\Reflection\src\Mimp.SeeSharper.Reflection\Mimp.SeeSharper.Reflection.csproj' -c $(Configuration)" />
+  </Target>
 
 </Project>

@@ -11,16 +11,24 @@
     <WarningsAsErrors>nullable</WarningsAsErrors>
   </PropertyGroup>
 
-
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="[2.1.0,]" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Mimp.SeeSharper.TypeProvider" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeProvider.Abstraction" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeResolver.Abstraction" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeResolver.Provide" Version="[1.0.0,]" />
   </ItemGroup>
 
-  
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <PackageReference Include="..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider\Mimp.SeeSharper.TypeProvider.csproj" />
+    <PackageReference Include="..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider.Abstraction\Mimp.SeeSharper.TypeProvider.Abstraction.csproj" />
+    <PackageReference Include="..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\Mimp.SeeSharper.TypeResolver.Abstraction.csproj" />
+    <PackageReference Include="..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Provide\Mimp.SeeSharper.TypeResolver.Provide.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Abstraction\Mimp.SeeSharper.DependencyInjection.Abstraction.csproj" />
     <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Instantiation\Mimp.SeeSharper.DependencyInjection.Instantiation.csproj" />
@@ -30,4 +38,11 @@
     <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection.Transient\Mimp.SeeSharper.DependencyInjection.Transient.csproj" />
   </ItemGroup>
 
+  <Target Name="BuildDependencies" Condition="'$(Configuration)' == 'Debug'" BeforeTargets="BuildLink">
+    <Exec Command="dotnet build '..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider\Mimp.SeeSharper.TypeProvider.csproj' -c $(Configuration)" />
+    <Exec Command="dotnet build '..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider.Abstraction\Mimp.SeeSharper.TypeProvider.Abstraction.csproj' -c $(Configuration)" />
+    <Exec Command="dotnet build '..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\Mimp.SeeSharper.TypeResolver.Abstraction.csproj' -c $(Configuration)" />
+    <Exec Command="dotnet build '..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Provide\Mimp.SeeSharper.TypeResolver.Provide.csproj' -c $(Configuration)" />
+  </Target>
+  
 </Project>

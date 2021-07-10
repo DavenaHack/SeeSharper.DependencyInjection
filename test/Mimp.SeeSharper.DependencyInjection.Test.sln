@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.DependencyInjection.Test", "Mimp.SeeSharper.DependencyInjection.Test\Mimp.SeeSharper.DependencyInjection.Test.csproj", "{0E918F46-C740-4DA1-8F7C-B3194F2E8063}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_src", "_src", "{8C108834-3D78-40D0-969D-CC1440599E5A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8C108834-3D78-40D0-969D-CC1440599E5A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.DependencyInjection.Abstraction", "..\src\Mimp.SeeSharper.DependencyInjection.Abstraction\Mimp.SeeSharper.DependencyInjection.Abstraction.csproj", "{1FC4189A-5E01-4E17-9248-28ACE9BF78C1}"
 EndProject
@@ -30,6 +30,34 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection", "..\src\Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection\Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection.csproj", "{F9960643-5932-409B-B6C3-B4FC69B45CE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.DependencyInjection.Extensions.Configuration", "..\src\Mimp.SeeSharper.DependencyInjection.Extensions.Configuration\Mimp.SeeSharper.DependencyInjection.Extensions.Configuration.csproj", "{660968FF-4CE3-4E72-807A-DF59B9301A82}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{2DE55B5A-5A75-459F-9728-9B09DB610327}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reflection", "Reflection", "{51FCD439-AD77-4F99-9F15-10249DF8FB22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeProvider", "TypeProvider", "{3A151B8D-1F9F-489B-8475-A84F6597FF0A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TypeResolver", "TypeResolver", "{3E466CCB-D458-405B-BF11-D3CDCB20FCD6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Instantiation", "Instantiation", "{FF2664C2-3776-4C9A-9811-88D6B4F3CF33}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Reflection", "..\libs\Reflection\src\Mimp.SeeSharper.Reflection\Mimp.SeeSharper.Reflection.csproj", "{92153920-3F8A-49DA-9637-1693A3C3ECD3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeProvider", "..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider\Mimp.SeeSharper.TypeProvider.csproj", "{35B121D2-524E-4214-B44A-12564B6A9A9A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeProvider.Abstraction", "..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider.Abstraction\Mimp.SeeSharper.TypeProvider.Abstraction.csproj", "{1AE9997B-96AA-46C1-A911-C7E118E2D391}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeResolver.Abstraction", "..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Abstraction\Mimp.SeeSharper.TypeResolver.Abstraction.csproj", "{7960934B-D9A8-4C5E-95EA-D215C37AD998}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeResolver.Provide", "..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Provide\Mimp.SeeSharper.TypeResolver.Provide.csproj", "{B8D7B497-B727-417C-8EBE-9813F0A61E61}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Instantiation.Abstraction", "..\libs\Instantiation\src\Mimp.SeeSharper.Instantiation.Abstraction\Mimp.SeeSharper.Instantiation.Abstraction.csproj", "{675F4D55-79F1-4F05-95AE-940B1E87D425}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Instantiation", "..\libs\Instantiation\src\Mimp.SeeSharper.Instantiation\Mimp.SeeSharper.Instantiation.csproj", "{17718874-547C-4BC0-A61B-DA554663DC29}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Instantiation.Type", "..\libs\Instantiation\src\Mimp.SeeSharper.Instantiation.Type\Mimp.SeeSharper.Instantiation.Type.csproj", "{A447E50C-2317-4A86-AC65-FA25D27ED9A4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeResolver", "..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\Mimp.SeeSharper.TypeResolver.csproj", "{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +117,42 @@ Global
 		{660968FF-4CE3-4E72-807A-DF59B9301A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{660968FF-4CE3-4E72-807A-DF59B9301A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{660968FF-4CE3-4E72-807A-DF59B9301A82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92153920-3F8A-49DA-9637-1693A3C3ECD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92153920-3F8A-49DA-9637-1693A3C3ECD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92153920-3F8A-49DA-9637-1693A3C3ECD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92153920-3F8A-49DA-9637-1693A3C3ECD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35B121D2-524E-4214-B44A-12564B6A9A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35B121D2-524E-4214-B44A-12564B6A9A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35B121D2-524E-4214-B44A-12564B6A9A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35B121D2-524E-4214-B44A-12564B6A9A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AE9997B-96AA-46C1-A911-C7E118E2D391}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AE9997B-96AA-46C1-A911-C7E118E2D391}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AE9997B-96AA-46C1-A911-C7E118E2D391}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AE9997B-96AA-46C1-A911-C7E118E2D391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7960934B-D9A8-4C5E-95EA-D215C37AD998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7960934B-D9A8-4C5E-95EA-D215C37AD998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7960934B-D9A8-4C5E-95EA-D215C37AD998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7960934B-D9A8-4C5E-95EA-D215C37AD998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8D7B497-B727-417C-8EBE-9813F0A61E61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8D7B497-B727-417C-8EBE-9813F0A61E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8D7B497-B727-417C-8EBE-9813F0A61E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8D7B497-B727-417C-8EBE-9813F0A61E61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{675F4D55-79F1-4F05-95AE-940B1E87D425}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{675F4D55-79F1-4F05-95AE-940B1E87D425}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{675F4D55-79F1-4F05-95AE-940B1E87D425}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{675F4D55-79F1-4F05-95AE-940B1E87D425}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17718874-547C-4BC0-A61B-DA554663DC29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17718874-547C-4BC0-A61B-DA554663DC29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17718874-547C-4BC0-A61B-DA554663DC29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17718874-547C-4BC0-A61B-DA554663DC29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A447E50C-2317-4A86-AC65-FA25D27ED9A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A447E50C-2317-4A86-AC65-FA25D27ED9A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A447E50C-2317-4A86-AC65-FA25D27ED9A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A447E50C-2317-4A86-AC65-FA25D27ED9A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +170,19 @@ Global
 		{044BF319-6CC6-4923-9293-716F51F638FD} = {8C108834-3D78-40D0-969D-CC1440599E5A}
 		{F9960643-5932-409B-B6C3-B4FC69B45CE1} = {8C108834-3D78-40D0-969D-CC1440599E5A}
 		{660968FF-4CE3-4E72-807A-DF59B9301A82} = {8C108834-3D78-40D0-969D-CC1440599E5A}
+		{51FCD439-AD77-4F99-9F15-10249DF8FB22} = {2DE55B5A-5A75-459F-9728-9B09DB610327}
+		{3A151B8D-1F9F-489B-8475-A84F6597FF0A} = {2DE55B5A-5A75-459F-9728-9B09DB610327}
+		{3E466CCB-D458-405B-BF11-D3CDCB20FCD6} = {2DE55B5A-5A75-459F-9728-9B09DB610327}
+		{FF2664C2-3776-4C9A-9811-88D6B4F3CF33} = {2DE55B5A-5A75-459F-9728-9B09DB610327}
+		{92153920-3F8A-49DA-9637-1693A3C3ECD3} = {51FCD439-AD77-4F99-9F15-10249DF8FB22}
+		{35B121D2-524E-4214-B44A-12564B6A9A9A} = {3A151B8D-1F9F-489B-8475-A84F6597FF0A}
+		{1AE9997B-96AA-46C1-A911-C7E118E2D391} = {3A151B8D-1F9F-489B-8475-A84F6597FF0A}
+		{7960934B-D9A8-4C5E-95EA-D215C37AD998} = {3E466CCB-D458-405B-BF11-D3CDCB20FCD6}
+		{B8D7B497-B727-417C-8EBE-9813F0A61E61} = {3E466CCB-D458-405B-BF11-D3CDCB20FCD6}
+		{675F4D55-79F1-4F05-95AE-940B1E87D425} = {FF2664C2-3776-4C9A-9811-88D6B4F3CF33}
+		{17718874-547C-4BC0-A61B-DA554663DC29} = {FF2664C2-3776-4C9A-9811-88D6B4F3CF33}
+		{A447E50C-2317-4A86-AC65-FA25D27ED9A4} = {FF2664C2-3776-4C9A-9811-88D6B4F3CF33}
+		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86} = {3E466CCB-D458-405B-BF11-D3CDCB20FCD6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DD24A5F2-6FE0-4589-9516-683A4E90CD6F}
