@@ -1,0 +1,18 @@
+[submodule "libs/TypeResolver"]
+	path = libs/TypeResolver
+	url = https://github.com/DavenaHack/SeeSharper.TypeResolver.git
+	branch = master
+[submodule "libs/TypeProvider"]
+	path = libs/TypeProvider
+	url = https://github.com/DavenaHack/SeeSharper.TypeProvider.git
+	branch = master
+[submodule "libs/Reflection"]
+	path = libs/Reflection
+	url = https://github.com/DavenaHack/SeeSharper.Reflection.git
+	branch = master
+[submodule "libs/Instantiation"]
+	path = libs/Instantiation
+	url = https://github.com/DavenaHack/SeeSharper.Instantiation.git
+	branch = master
+[submodule]
+	update = --init --recursive
