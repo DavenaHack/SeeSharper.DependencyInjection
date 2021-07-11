@@ -18,6 +18,7 @@
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Mimp.SeeSharper.TypeProvider" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeProvider.Abstraction" Version="[1.0.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.TypeResolver" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeResolver.Abstraction" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeResolver.Provide" Version="[1.0.0,]" />
   </ItemGroup>
@@ -30,6 +31,9 @@
       <HintPath>..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider.Abstraction\bin\Debug\$(TargetFramework)\Mimp.SeeSharper.TypeProvider.Abstraction.dll</HintPath>
     </Reference>
     <Reference Include="Mimp.SeeSharper.TypeResolver">
+      <HintPath>..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\bin\Debug\$(TargetFramework)\Mimp.SeeSharper.TypeResolver.dll</HintPath>
+    </Reference>
+    <Reference Include="Mimp.SeeSharper.TypeResolver.Abstraction">
       <HintPath>..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Abstraction\bin\Debug\$(TargetFramework)\Mimp.SeeSharper.TypeResolver.Abstraction.dll</HintPath>
     </Reference>
     <Reference Include="Mimp.SeeSharper.TypeResolver.Provide">
@@ -49,6 +53,7 @@
   <Target Name="ResolveDependencies" BeforeTargets="BeforeResolveReferences" Condition="'$(Configuration)' == 'Debug'">
     <MSBuild Projects="..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider\Mimp.SeeSharper.TypeProvider.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
     <MSBuild Projects="..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider.Abstraction\Mimp.SeeSharper.TypeProvider.Abstraction.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
+    <MSBuild Projects="..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\Mimp.SeeSharper.TypeResolver.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
     <MSBuild Projects="..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Abstraction\Mimp.SeeSharper.TypeResolver.Abstraction.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
     <MSBuild Projects="..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Provide\Mimp.SeeSharper.TypeResolver.Provide.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
   </Target>

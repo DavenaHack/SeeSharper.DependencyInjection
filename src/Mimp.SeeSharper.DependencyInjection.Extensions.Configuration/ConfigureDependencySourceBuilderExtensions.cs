@@ -3,7 +3,6 @@ using Mimp.SeeSharper.DependencyInjection.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Extensions.Configuration.Abstraction;
 using Mimp.SeeSharper.TypeProvider;
 using Mimp.SeeSharper.TypeProvider.Abstraction;
-using Mimp.SeeSharper.TypeResolver;
 using Mimp.SeeSharper.TypeResolver.Abstraction;
 using Mimp.SeeSharper.TypeResolver.Provide;
 using System;
@@ -20,12 +19,12 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
 
         static ConfigureDependencySourceBuilderExtensions()
         {
-            var typeResolver = new ProvidedTypeResolver(new MultipleAssemblyTypeProvider(new IAssemblyTypeProvider[] {
+            var typeResolver = new ProvidingTypeResolver(new MultipleAssemblyTypeProvider(new IAssemblyTypeProvider[] {
                 new UsedAssemblyTypeProvider(),
                 new EntryAssemblyTypeProvider(),
                 new ExecutingAssemblyTypeProvider()
             }));
-            _DefaultFactoryBuilder = new ConfigurationDependencyFactoryBuilder(typeResolver.ResolveRequired);
+            _DefaultFactoryBuilder = new ConfigurationDependencyFactoryBuilder(typeResolver.ResolveSingle);
             _DefaultSourceBuilder = new ConfigurationDependencySourceBuilder(_DefaultFactoryBuilder);
         }
 
