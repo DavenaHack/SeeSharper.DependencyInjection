@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-    <ProjectReference Include="..\..\libs\Reflection\src\Mimp.SeeSharper.Reflection\Mimp.SeeSharper.Reflection.csproj" />
+    <Reference Include="Mimp.SeeSharper.Reflection">
+      <HintPath>..\..\libs\Reflection\src\Mimp.SeeSharper.Reflection\bin\Debug\$(TargetFramework)\Mimp.SeeSharper.Reflection.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -24,8 +26,8 @@
     <ProjectReference Include="..\Mimp.SeeSharper.DependencyInjection\Mimp.SeeSharper.DependencyInjection.csproj" />
   </ItemGroup>
 
-  <Target Name="BuildDependencies" Condition="'$(Configuration)' == 'Debug'" BeforeTargets="BuildLink">
-    <Exec Command="dotnet build '..\..\libs\Reflection\src\Mimp.SeeSharper.Reflection\Mimp.SeeSharper.Reflection.csproj' -c $(Configuration)" />
+  <Target Name="ResolveDependencies" BeforeTargets="BeforeResolveReferences" Condition="'$(Configuration)' == 'Debug'">
+    <MSBuild Projects="..\..\libs\Reflection\src\Mimp.SeeSharper.Reflection\Mimp.SeeSharper.Reflection.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
   </Target>
-
+  
 </Project>
