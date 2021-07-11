@@ -62,7 +62,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
                 }
             }
 
-            throw InstantiationException.GetCanNotInstantiateExeption(type, instantiateValues);
+            throw InstantiationException.GetCanNotInstantiateException(type, instantiateValues);
         }
 
         public void Initialize(object? instance, object? initializeValues, out object? ignoredInitializeValues)

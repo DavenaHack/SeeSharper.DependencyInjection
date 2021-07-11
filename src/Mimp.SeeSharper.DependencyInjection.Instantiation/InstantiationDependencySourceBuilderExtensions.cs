@@ -65,7 +65,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
 
         public static ITypeResolver GetDefaultTypeResolver(IDependencyProvider provider)
         {
-            return new ProvidedTypeResolver(new MultipleAssemblyTypeProvider(new IAssemblyTypeProvider[] {
+            return new ProvidingTypeResolver(new MultipleAssemblyTypeProvider(new IAssemblyTypeProvider[] {
                 new UsedAssemblyTypeProvider(),
                 new EntryAssemblyTypeProvider(),
                 new ExecutingAssemblyTypeProvider()

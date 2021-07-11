@@ -17,6 +17,9 @@
     <PackageReference Include="Mimp.SeeSharper.Instantiation.Type" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.Reflection" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeProvider" Version="[1.0.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.TypeProvider.Abstraction" Version="[1.0.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.TypeResolver" Version="[1.0.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.TypeResolver.Abstraction" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeResolver.Provide" Version="[1.0.0,]" />
   </ItemGroup>
 
@@ -35,6 +38,15 @@
     </Reference>
     <Reference Include="Mimp.SeeSharper.TypeProvider">
       <HintPath>..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider\bin\Debug\$(TargetFramework)\Mimp.SeeSharper.TypeProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="Mimp.SeeSharper.TypeProvider.Abstraction">
+      <HintPath>..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider.Abstraction\bin\Debug\$(TargetFramework)\Mimp.SeeSharper.TypeProvider.Abstraction.dll</HintPath>
+    </Reference>
+    <Reference Include="Mimp.SeeSharper.TypeResolver">
+      <HintPath>..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\bin\Debug\$(TargetFramework)\Mimp.SeeSharper.TypeResolver.dll</HintPath>
+    </Reference>
+    <Reference Include="Mimp.SeeSharper.TypeResolver.Abstraction">
+      <HintPath>..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Abstraction\bin\Debug\$(TargetFramework)\Mimp.SeeSharper.TypeResolver.Abstraction.dll</HintPath>
     </Reference>
     <Reference Include="Mimp.SeeSharper.TypeResolver.Provide">
       <HintPath>..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Provide\bin\Debug\$(TargetFramework)\Mimp.SeeSharper.TypeResolver.Provide.dll</HintPath>
