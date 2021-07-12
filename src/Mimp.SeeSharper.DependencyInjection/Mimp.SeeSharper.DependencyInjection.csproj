@@ -4,7 +4,7 @@
     <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;netstandard2.1;net48;net461</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <AssemblyName>Mimp.SeeSharper.DependencyInjection</AssemblyName>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <AssemblyTitle>SeeSharper DependencyInjection</AssemblyTitle>
     <Description>SeeSharper DependencyInjection is a IoC container which work with IoC pattern.</Description>
     <Authors>SeeSharper Contributors</Authors>

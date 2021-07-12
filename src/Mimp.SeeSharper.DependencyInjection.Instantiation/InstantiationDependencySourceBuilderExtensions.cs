@@ -106,7 +106,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
                 );
 
                 var intern = internalBuilder.Build();
-                var instance = new ConstructorInstantiator(intern, true);
+                var instance = new ConstructorMemberInstantiator(intern, true);
 
                 var instantiators = new List<IInstantiator>();
 
