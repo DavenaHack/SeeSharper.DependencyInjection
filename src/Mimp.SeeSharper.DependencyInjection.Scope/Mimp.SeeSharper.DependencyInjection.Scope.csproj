@@ -3,6 +3,22 @@
   <PropertyGroup>
     <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;netstandard2.1;net48;net461</TargetFrameworks>
     <LangVersion>latest</LangVersion>
+    <AssemblyName>Mimp.SeeSharper.DependencyInjection.Scope</AssemblyName>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <AssemblyTitle>SeeSharper DependencyInjection Scope</AssemblyTitle>
+    <Description>SeeSharper DependencyInjection Scope is a IoC container which work with IoC pattern.</Description>
+    <Authors>SeeSharper Contributors</Authors>
+    <Company>Mimp</Company>
+    <Product>SeeSharper DependencyInjection Scope</Product>
+    <Copyright>Copyright © 2021 SeeSharper Contributors</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageId>Mimp.SeeSharper.DependencyInjection.Scope</PackageId>
+    <Version>1.0.0</Version>
+    <PackageTags>seesharper;.net;dependency;injection;dependencyInjection;di;inversionOfControl;ioc</PackageTags>
+    <PackageProjectUrl>https://github.com/DavenaHack/SeeSharper.DependencyInjection</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/DavenaHack/SeeSharper.DependencyInjection</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Label="nullable">
