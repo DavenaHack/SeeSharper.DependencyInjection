@@ -4,7 +4,7 @@ using Mimp.SeeSharper.DependencyInjection.Extensions.Configuration.Abstraction;
 using Mimp.SeeSharper.TypeProvider;
 using Mimp.SeeSharper.TypeProvider.Abstraction;
 using Mimp.SeeSharper.TypeResolver.Abstraction;
-using Mimp.SeeSharper.TypeResolver.Provide;
+using Mimp.SeeSharper.TypeResolver.TypeProvider;
 using System;
 
 namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration

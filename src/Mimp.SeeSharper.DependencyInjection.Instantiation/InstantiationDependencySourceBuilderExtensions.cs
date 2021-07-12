@@ -3,12 +3,12 @@ using Mimp.SeeSharper.DependencyInjection.Tag.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Transient;
 using Mimp.SeeSharper.Instantiation;
 using Mimp.SeeSharper.Instantiation.Abstraction;
-using Mimp.SeeSharper.Instantiation.Type;
+using Mimp.SeeSharper.Instantiation.TypeResolver;
 using Mimp.SeeSharper.Reflection;
 using Mimp.SeeSharper.TypeProvider;
 using Mimp.SeeSharper.TypeProvider.Abstraction;
 using Mimp.SeeSharper.TypeResolver.Abstraction;
-using Mimp.SeeSharper.TypeResolver.Provide;
+using Mimp.SeeSharper.TypeResolver.TypeProvider;
 using System;
 using System.Collections.Generic;
 
@@ -94,7 +94,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
             beforeAddDefaults?.Invoke(builder);
 
             builder.SetTypedRoot(typeResolver, typeKey);
-            builder.AddType(typeResolver);
+            builder.AddTypeResolver(typeResolver);
 
             builder.Add(root =>
             {

@@ -45,13 +45,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeProvide
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeResolver.Abstraction", "..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Abstraction\Mimp.SeeSharper.TypeResolver.Abstraction.csproj", "{7960934B-D9A8-4C5E-95EA-D215C37AD998}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeResolver.Provide", "..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.Provide\Mimp.SeeSharper.TypeResolver.Provide.csproj", "{B8D7B497-B727-417C-8EBE-9813F0A61E61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeResolver.TypeProvider", "..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver.TypeProvider\Mimp.SeeSharper.TypeResolver.TypeProvider.csproj", "{B8D7B497-B727-417C-8EBE-9813F0A61E61}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Instantiation.Abstraction", "..\libs\Instantiation\src\Mimp.SeeSharper.Instantiation.Abstraction\Mimp.SeeSharper.Instantiation.Abstraction.csproj", "{675F4D55-79F1-4F05-95AE-940B1E87D425}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Instantiation", "..\libs\Instantiation\src\Mimp.SeeSharper.Instantiation\Mimp.SeeSharper.Instantiation.csproj", "{17718874-547C-4BC0-A61B-DA554663DC29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Instantiation.Type", "..\libs\Instantiation\src\Mimp.SeeSharper.Instantiation.Type\Mimp.SeeSharper.Instantiation.Type.csproj", "{A447E50C-2317-4A86-AC65-FA25D27ED9A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Instantiation.TypeResolver", "..\libs\Instantiation\src\Mimp.SeeSharper.Instantiation.TypeResolver\Mimp.SeeSharper.Instantiation.TypeResolver.csproj", "{A447E50C-2317-4A86-AC65-FA25D27ED9A4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeResolver", "..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\Mimp.SeeSharper.TypeResolver.csproj", "{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}"
 EndProject
