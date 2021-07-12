@@ -31,7 +31,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
             if (context is null)
                 throw new ArgumentNullException(nameof(context));
 
-            if (!IsScope(provider, context)) // TODO rec
+            if (!IsScope(provider, context))
                 return Array.Empty<IDependencyFactory>();
 
             return Source.GetFactories(provider, context);
