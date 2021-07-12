@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.v2", "AspNetCore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLibrary", "ServiceLibrary\ServiceLibrary.csproj", "{7507ADA6-77B7-46F7-A4F0-07A18828246D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_src", "_src", "{DC770612-FF22-40A1-BF91-04818F37C7DC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DC770612-FF22-40A1-BF91-04818F37C7DC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.DependencyInjection", "..\src\Mimp.SeeSharper.DependencyInjection\Mimp.SeeSharper.DependencyInjection.csproj", "{46F304AC-0D4C-4E65-B72B-06F68BBD6D65}"
 EndProject
