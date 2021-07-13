@@ -15,67 +15,235 @@ All necessary packages are public available on [NuGet](https://www.nuget.org/) a
 ```ps
 Install-Package Mimp.SeeSharper.DependencyInjection
 ```
+```cs
+public class Program
+{
 
-<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.cs"></script>
+	public static void Main(string[] args)
+	{
+		// Create a dependency builder
+		IDependencySourceBuilder builder = new DependencySourceBuilder();
+
+		// Add your dependency to the builder
+		// ...
+		// ...
+
+		// Create the provider
+		IDependencyProvider provider = new DependencyProvider(
+			builder.BuildSource(),
+			new FallbackEnumerableDependencyMatcher(
+				new DependencyMatcher()
+					.Intersect(new TagDependencyMatcher())),
+			new LastDependencySelector(),
+			new DependencyInvoker()
+		);
+
+		// Provide your dependency and use it
+		// With "Use" the dependency will automatically dispose
+		provider.Use<IMyDependency>(myDependency => {
+			// ...
+		});
+
+		// Don't forget to dispose the provider
+		proivder.Dispose();
+
+		}
+  
+}
+```
 
 ### Singleton
 
 ```ps
 Install-Package Mimp.SeeSharper.DependencyInjection.Singleton
 ```
-
-<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Singleton.cs"></script>
+```cs
+public static void AddSingletons(IDependencySourceBuilder builder)
+{
+  builder.AddSingleton<MyDependency>(provider => {
+    // Create your dependency
+    return new MyDependency();  
+  }, (provider, myDependency) => {
+    // Initialize your dependency
+    // this step can skip and do all in factory method
+    // it could be helpful when you need a bidirectional references has
+    myDependency.IsInit = true;
+  }).As<IMyDependency>();
+}
+```
 
 ### Scope
 
 ```ps
 Install-Package Mimp.SeeSharper.DependencyInjection.Scope
 ```
+```cs
+public static void AddScopes(IDependencySourceBuilder builder)
+{
+  // Add all dependencies that are nessesary to resolve scopes
+  builder.UseScope();
 
-<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Scope.cs"></script>
+  // Add dependency
+  builder.AddScoped<MyDependency>(provider => {
+    // Create your dependency
+    return new MyDependency();  
+  }, (provider, myDependency) => {
+    // Initialize your dependency
+    // this step can skip and do all in factory method
+    // it could be helpful when you need a bidirectional references has
+    myDependency.IsInit = true;
+  }).AddScope("scope1")
+    .AddScope("scope2")
+    .As<IMyDependency>();
+  
+  // Add a source that applies only to the scope
+  builder.AddScopedSource(scopeBuilder => {
+      // add dependencies or other (scoped) sources
+    },
+    "scope3",
+    "scope4",
+  );
+}
+```
 
 ### Transient
 
 ```ps
 Install-Package Mimp.SeeSharper.DependencyInjection.Transient
 ```
-
-<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Transient.cs"></script>
+```cs
+public static void AddTransients(IDependencySourceBuilder builder)
+{
+  builder.AddTransient<MyDependency>(provider => {
+    // Create your dependency
+    return new MyDependency();  
+  }).As<IMyDependency>();
+}
+```
 
 ### Tag - Name/Key
 
 ```ps
 Install-Package Mimp.SeeSharper.DependencyInjection.Tag
 ```
-
-<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Tag.cs"></script>
+```cs
+public static void AddInstantiations(IDependencySourceBuilder builder)
+{
+  // Add a ITagVerifier to compare tags.
+  builder.UseTagVerifier();
+  
+  builder.AddSingleton(/* ... */)
+    .Tag("dep1");
+  builder.AddScoped(/* ... */)
+    .Tag("dep2");
+  builder.AddTransient(/* ... */)
+    .Tag("dep3");
+}
+```
 
 ### Instantiation - Auto instantiate and resolving
 
 ```ps
 Install-Package Mimp.SeeSharper.DependencyInjection.Instantiation
 ```
-
-<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Instantiation.cs"></script>
+```cs
+public static void AddInstantiations(IDependencySourceBuilder builder)
+{
+  // Add all dependencies that are nessesary
+  // to instantiate class with injecting it dependencies.
+  // You can pass parameter to instantiate, too.
+  builder.UseInstantiator();
+  
+  builder.AddSingleton<IMyDependency, MyDependency>();
+  builder.AddScoped<IMyDependency, MyDependency>();
+  builder.AddTransient<IMyDependency, MyDependency>(new Dictionary<string, object>{
+    { "Parameter", "Value" }
+  });
+}
+```
 
 
 ### Asp.Net (Core v3 - .Net 5)
 
 ```ps
 Install-Package Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection
+Install-Package Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
 ```
 
 #### Add to Asp.Net
 
-<script src="https://gist.github.com/DavenaHack/a33c91cc6392e7ff5f942c1d0f9ac867.js?file=Program.cs"></script>
+```cs
+public class Program
+{
+
+	public static void Main(string[] args)
+	{
+		CreateHostBuilder(args).Build().Run();
+	}
+
+	public static IHostBuilder CreateHostBuilder(string[] args) =>
+		Host.CreateDefaultBuilder(args)
+			// Add SerivceProviderFactory to Asp.Net
+			.UseServiceProviderFactory(new DependencyServiceProviderFactory())
+			.ConfigureWebHostDefaults(webBuilder =>
+			{
+				webBuilder.UseStartup<Startup>();
+			});
+
+}
+```
 
 #### Configure your services
 
-<script src="https://gist.github.com/DavenaHack/a33c91cc6392e7ff5f942c1d0f9ac867.js?file=StartUp.cs"></script>
+```cs
+public class Startup
+{
+
+	// This method gets called by the runtime. Use this method to add services to the container.
+	public void ConfigureServices(IServiceCollection services)
+	{
+		services.AddControllers();
+		services.AddHttpContextAccessor();
+	}
+
+	// This method gets called by the runtime. Use this method to add dependencies to the builder.
+	public void ConfigureContainer(IDependencySourceBuilder builder)
+	{
+		// Add your own IScopeProvider to manage your scopes and tenants.
+		builder.UseScopeProvider(provider => 
+		  new HttpHeaderScopeProvider(provider.GetDependencyRequired<IHttpContextAccessor>()));
+
+		// Configure your services in a json or xml file with help of a IConfiguration
+		builder.AddConfigureSource(new ConfigurationBuilder().AddJsonFile("dependencies.json").Build());
+	}
+
+}
+```
 
 #### Implement your own scope providing
 
-<script src="https://gist.github.com/DavenaHack/a33c91cc6392e7ff5f942c1d0f9ac867.js?file=StartUp.cs"></script>
+```cs
+public class HttpHeaderScopeProvider : IScopeProvider
+{
+
+	public IHttpContextAccessor HttpContextAccessor { get; }
+
+	public HttpHeaderScopeProvider(IHttpContextAccessor httpContextAccessor)
+	{
+		HttpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
+	}
+
+	public object GetScope(IDependencyScope scope)
+	{
+		var context = HttpContextAccessor.HttpContext;
+		if (context is null)
+			return new object(); // return anonymous
+
+		return context.Request.Headers["Scope"].FirstOrDefault() ?? new object();
+	}
+
+}
+```
 
 
 
