@@ -3,5 +3,81 @@
 *SeeSharper DependencyInjection* is a component from the framework *[SeeSharper](https://github.com/DavenaHack/SeeSharper)*. *SeeSharper DependencyInjection* is a IoC container which work with IoC pattern. It support to plug in to other frameworks like Asp.Net.
 
 
+## Get started
+
+The construct is kept very abstract and may seem confusing for the beginning. So that everyone can get an insight into the framework, here are the basic explained briefly and concisely.
+
+All necessary packages are public available on [NuGet](https://www.nuget.org/) and [GitHub](https://github.com/DavenaHack?tab=packages&repo_name=SeeSharper.DependencyInjection).
+
+
+### Creating a *IDependencyProvider* and provide a *IDependency*
+
+```ps
+Install-Package Mimp.SeeSharper.DependencyInjection
+```
+
+<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.cs"></script>
+
+### Singleton
+
+```ps
+Install-Package Mimp.SeeSharper.DependencyInjection.Singleton
+```
+
+<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Singleton.cs"></script>
+
+### Scope
+
+```ps
+Install-Package Mimp.SeeSharper.DependencyInjection.Scope
+```
+
+<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Scope.cs"></script>
+
+### Transient
+
+```ps
+Install-Package Mimp.SeeSharper.DependencyInjection.Transient
+```
+
+<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Transient.cs"></script>
+
+### Tag - Name/Key
+
+```ps
+Install-Package Mimp.SeeSharper.DependencyInjection.Tag
+```
+
+<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Tag.cs"></script>
+
+### Instantiation - Auto instantiate and resolving
+
+```ps
+Install-Package Mimp.SeeSharper.DependencyInjection.Instantiation
+```
+
+<script src="https://gist.github.com/DavenaHack/7aadfd12ff294967aacdff071c742a59.js?file=Program.Instantiation.cs"></script>
+
+
+### Asp.Net (Core v3 - .Net 5)
+
+```ps
+Install-Package Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection
+```
+
+#### Add to Asp.Net
+
+<script src="https://gist.github.com/DavenaHack/a33c91cc6392e7ff5f942c1d0f9ac867.js?file=Program.cs"></script>
+
+#### Configure your services
+
+<script src="https://gist.github.com/DavenaHack/a33c91cc6392e7ff5f942c1d0f9ac867.js?file=StartUp.cs"></script>
+
+#### Implement your own scope providing
+
+<script src="https://gist.github.com/DavenaHack/a33c91cc6392e7ff5f942c1d0f9ac867.js?file=StartUp.cs"></script>
+
+
+
 ## License
 Like *SeeSharper*, *SeeSharper DependencyInjection* is under the [MIT license](https://github.com/DavenaHack/SeeSharper.DependencyInjection/blob/master/LICENSE), too.
