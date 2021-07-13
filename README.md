@@ -5,7 +5,7 @@
 
 ## Get started
 
-The construct is kept very abstract and may seem confusing for the beginning. So that everyone can get an insight into the framework, here are the basic explained briefly and concisely.
+The construct is kept very abstract and may seem confusing for the beginning. So that everyone can get an insight into the framework, here are the basic explained briefly and concisely. It exist some [samples](https://github.com/DavenaHack/SeeSharper.DependencyInjection/tree/master/sample) too.
 
 All necessary packages are public available on [NuGet](https://www.nuget.org/) and [GitHub](https://github.com/DavenaHack?tab=packages&repo_name=SeeSharper.DependencyInjection).
 
