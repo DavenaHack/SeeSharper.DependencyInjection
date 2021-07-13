@@ -19,36 +19,36 @@ Install-Package Mimp.SeeSharper.DependencyInjection
 public class Program
 {
 
-	public static void Main(string[] args)
-	{
-		// Create a dependency builder
-		IDependencySourceBuilder builder = new DependencySourceBuilder();
+  public static void Main(string[] args)
+  {
+    // Create a dependency builder
+    IDependencySourceBuilder builder = new DependencySourceBuilder();
 
-		// Add your dependency to the builder
-		// ...
-		// ...
+    // Add your dependency to the builder
+    // ...
+    // ...
 
-		// Create the provider
-		IDependencyProvider provider = new DependencyProvider(
-			builder.BuildSource(),
-			new FallbackEnumerableDependencyMatcher(
-				new DependencyMatcher()
-					.Intersect(new TagDependencyMatcher())),
-			new LastDependencySelector(),
-			new DependencyInvoker()
-		);
+    // Create the provider
+    IDependencyProvider provider = new DependencyProvider(
+      builder.BuildSource(),
+      new FallbackEnumerableDependencyMatcher(
+        new DependencyMatcher()
+          .Intersect(new TagDependencyMatcher())),
+      new LastDependencySelector(),
+      new DependencyInvoker()
+    );
 
-		// Provide your dependency and use it
-		// With "Use" the dependency will automatically dispose
-		provider.Use<IMyDependency>(myDependency => {
-			// ...
-		});
+    // Provide your dependency and use it
+    // With "Use" the dependency will automatically dispose
+    provider.Use<IMyDependency>(myDependency => {
+      // ...
+    });
 
-		// Don't forget to dispose the provider
-		proivder.Dispose();
+    // Don't forget to dispose the provider
+    proivder.Dispose();
 
-		}
-  
+  }
+
 }
 ```
 
