@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Scope.Abstraction\Mimp.SeeSharper.DependencyInjection.Scope.Abstraction.csproj" />
+    <ProjectReference Include="..\..\src\Mimp.SeeSharper.DependencyInjection.Scope\Mimp.SeeSharper.DependencyInjection.Scope.csproj" />
   </ItemGroup>
 
 </Project>

@@ -43,7 +43,12 @@ namespace AspNetCore.v3
                 "scope1"
             );
 
+            var subScope = SubScope.Create("scope1", "subscope1");
+            builder.AddScoped<IFooService>(_ => new FooService("foo11"))
+                .AddScope(subScope);
+
             builder.AddConfigureSource(new ConfigurationBuilder().AddJsonFile("scope2.json").Build());
+            builder.AddConfigureSource(new ConfigurationBuilder().AddJsonFile("scope22.json").Build());
 
         }
 

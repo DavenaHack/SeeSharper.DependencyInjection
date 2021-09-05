@@ -189,7 +189,9 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
                     throw new InvalidOperationException($"{scopes.Path} has to be a enumerable");
                 if (scope.Value is null)
                     throw new InvalidOperationException($"{scope.Path} has to be a string");
-                yield return scope.Value;
+
+                var scopeParts = scope.Value.Split('.');
+                yield return scopeParts.Length > 1 ? SubScope.Create(scopeParts) : (object)scopeParts[0];
             }
         }
 

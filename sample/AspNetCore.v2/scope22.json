@@ -1,0 +1,19 @@
+{
+  "sources": [
+    {
+      "scopes": [ "scope2.subscope2" ],
+      "dependencies": [
+        {
+          "type": "BarService",
+          "lifetime": "singleton",
+          "types": [
+            "IBarService"
+          ],
+          "instantiate": {
+            "bar": "bar22"
+          }
+        }
+      ]
+    }
+  ],
+}

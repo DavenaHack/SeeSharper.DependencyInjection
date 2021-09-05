@@ -20,8 +20,8 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
             SuperScopes = superScopes;
         }
 
-        public ScopeVerifier(bool subscopes)
-            : this(new ScopeEqualityComparer(), subscopes) { }
+        public ScopeVerifier(bool superScopes)
+            : this(new ScopeEqualityComparer(), superScopes) { }
 
         public ScopeVerifier()
             : this(true) { }

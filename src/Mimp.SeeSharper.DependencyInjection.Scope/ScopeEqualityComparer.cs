@@ -12,20 +12,52 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
 
         public IEqualityComparer<object?> Comparer { get; }
 
+        public bool SubScopes { get; }
 
-        public ScopeEqualityComparer(IEqualityComparer<object?> comparer)
+
+        public ScopeEqualityComparer(IEqualityComparer<object?> comparer, bool subScopes)
         {
             Comparer = comparer ?? throw new ArgumentNullException(nameof(comparer));
+            SubScopes = subScopes;
         }
 
+        public ScopeEqualityComparer(bool subScopes)
+            : this(EqualityComparer<object?>.Default, subScopes) { }
+
         public ScopeEqualityComparer()
-            : this(EqualityComparer<object?>.Default) { }
+            : this(true) { }
 
 
         public new virtual bool Equals(object? providerScope, object? scope)
         {
-            return scope is null
-                || Comparer.Equals(providerScope, scope);
+            if (scope is null)
+                return true;
+
+            if (Comparer.Equals(providerScope, scope))
+                return true;
+
+            if (SubScopes)
+            {
+                bool IsSubScope(object? providerScope)
+                {
+                    while (providerScope is SubScope sub)
+                    {
+                        if (Comparer.Equals(sub.Scope, scope))
+                            return true;
+                        if (sub.Scope is SubScope)
+                            return IsSubScope(sub.Scope);
+
+                        providerScope = sub.Parent;
+                        if (Comparer.Equals(providerScope, scope))
+                            return true;
+                    }
+                    return false;
+                }
+
+                return IsSubScope(providerScope);
+            }
+
+            return false;
         }
 
 
