@@ -1,6 +1,8 @@
 ﻿using Mimp.SeeSharper.DependencyInjection.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Tag.Abstraction;
 using Mimp.SeeSharper.Instantiation.Abstraction;
+using Mimp.SeeSharper.ObjectDescription;
+using Mimp.SeeSharper.ObjectDescription.Abstraction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,49 +27,81 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
         }
 
 
-        public bool Instantiable(Type type, object? instantiateValues)
+        public bool Instantiable(Type type, IObjectDescription description)
         {
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
+            if (description is null)
+                throw new ArgumentNullException(nameof(description));
 
-            if (instantiateValues is null)
+            if (description.IsNullOrEmpty())
                 return Provider.UseElse(type, _ => true, false);
 
-            if (instantiateValues is not IEnumerable<KeyValuePair<string?, object?>> keyValues)
+            if (description.HasValue)
                 return false;
 
-            if (!keyValues.Any())
-                return Provider.UseElse(type, _ => true, false);
+            if (description.Children.All(pair => string.Equals(pair.Key, TagKey, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                var tag = description.Children.First().Value;
+                if (!tag.HasValue || tag.Value is null)
+                    return false;
 
-            if (keyValues.All(pair => string.Equals(pair.Key, TagKey, StringComparison.InvariantCultureIgnoreCase)))
-                return Provider.UseElse(keyValues.First().Value!, type, _ => true, false);
+                return Provider.UseElse(tag.Value, type, _ => true, false);
+            }
 
             return false;
         }
 
-        public object? Instantiate(Type type, object? instantiateValues, out object? ignoredInstantiateValues)
+
+        public object? Instantiate(Type type, IObjectDescription description, out IObjectDescription? ignored)
         {
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
-            if (!Instantiable(type, instantiateValues))
-                throw InstantiationException.GetNotMatchingTypeException(this, type);
+            if (description is null)
+                throw new ArgumentNullException(nameof(description));
+            if (!Instantiable(type, description))
+                throw InstantiationException.GetNotMatchingTypeException(this, type, description);
 
-            if (instantiateValues is null || instantiateValues is IEnumerable<KeyValuePair<string, object>> keyValues && !keyValues.Any())
+            if (description.IsNullOrEmpty())
             {
                 var dependency = Provider.Provide(type);
                 if (dependency is not null)
                 {
-                    ignoredInstantiateValues = instantiateValues;
+                    ignored = null;
                     return dependency.Dependency;
                 }
             }
 
-            throw InstantiationException.GetCanNotInstantiateException(type, instantiateValues);
+            if (description.Children.All(pair => string.Equals(pair.Key, TagKey, StringComparison.InvariantCultureIgnoreCase)))
+            {
+                var tag = description.Children.First().Value;
+                if (tag.HasValue && tag.Value is not null)
+                {
+                    var dependency = Provider.Provide(tag.Value, type);
+                    if (dependency is not null)
+                    {
+                        ignored = null;
+                        return dependency.Dependency;
+                    }
+                }
+            }
+
+            throw InstantiationException.GetCanNotInstantiateException(type, description);
         }
 
-        public void Initialize(object? instance, object? initializeValues, out object? ignoredInitializeValues)
+
+        public object? Initialize(Type type, object? instance, IObjectDescription description, out IObjectDescription? ignored)
         {
-            ignoredInitializeValues = initializeValues;
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+            if (description is null)
+                throw new ArgumentNullException(nameof(description));
+
+            if (instance is null)
+                return Instantiate(type, description, out ignored);
+
+            ignored = description.IsNullOrEmpty() ? null : description;
+            return instance;
         }
 
 

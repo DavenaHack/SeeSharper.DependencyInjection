@@ -4,6 +4,8 @@ using Mimp.SeeSharper.DependencyInjection.Transient;
 using Mimp.SeeSharper.Instantiation;
 using Mimp.SeeSharper.Instantiation.Abstraction;
 using Mimp.SeeSharper.Instantiation.TypeResolver;
+using Mimp.SeeSharper.ObjectDescription;
+using Mimp.SeeSharper.ObjectDescription.Abstraction;
 using Mimp.SeeSharper.Reflection;
 using Mimp.SeeSharper.TypeProvider;
 using Mimp.SeeSharper.TypeProvider.Abstraction;
@@ -106,7 +108,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
                 );
 
                 var intern = internalBuilder.Build();
-                var instance = new ConstructorMemberInstantiator(intern, true);
+                var instance = new ConstructorMemberInstantiator(intern, true, true, intern);
 
                 var instantiators = new List<IInstantiator>();
 
@@ -122,22 +124,57 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
         }
 
 
-        public static Func<IDependencyContext, Type, Action<object>, object> InstantiateInitialize(Type type, object? instantiateValues, object? initializeValues)
+        public static Func<IDependencyContext, Type, Action<object>, object> InstantiateInitialize(
+            Type type, IObjectDescription instantiate, IObjectDescription initialize)
         {
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+            if (instantiate is null)
+                throw new ArgumentNullException(nameof(instantiate));
+            if (initialize is null)
+                throw new ArgumentNullException(nameof(initialize));
+
             return (context, t, save) => context.Provider.Use<IInstantiator, object>(InstantiatorTag, instantiator =>
             {
                 t = GetInstantiationType(t, type);
                 var n = t.Name;
-                var instance = instantiator.Instantiate(t, instantiateValues, out _) ?? throw new InvalidOperationException($"{instantiator} return null for type {t} and {instantiateValues}");
+                var instance = instantiator.Instantiate(t, instantiate)
+                    ?? throw new InvalidOperationException($"{instantiator} instantiate null for type {t} and {instantiate}");
                 save(instance);
-                instantiator.Initialize(instance, initializeValues, out _);
-                return instance;
+                return instantiator.Initialize(t, instance, initialize)
+                    ?? throw new InvalidOperationException($"{instantiator} initialize null for instance {instance} of type {t} and {initialize}");
             });
         }
 
-        public static Func<IDependencyContext, Type, object> Construct(Type type, object? instantiateValues, object? initializeValues)
+        public static Func<IDependencyContext, Type, Action<object>, object> InstantiateInitialize(
+            Type type, IObjectDescription description)
         {
-            var factory = InstantiateInitialize(type, instantiateValues, initializeValues);
+            if (type is null)
+                throw new ArgumentNullException(nameof(type));
+            if (description is null)
+                throw new ArgumentNullException(nameof(description));
+
+            return (context, t, save) => context.Provider.Use<IInstantiator, object>(InstantiatorTag, instantiator =>
+            {
+                t = GetInstantiationType(t, type);
+                var n = t.Name;
+                var instance = instantiator.Instantiate(t, description, out var ignored)
+                    ?? throw new InvalidOperationException($"{instantiator} instantiate null for type {t} and {description}");
+                save(instance);
+                return instantiator.Initialize(t, instance, ignored ?? ObjectDescriptions.NullDescription)
+                    ?? throw new InvalidOperationException($"{instantiator} initialize null for instance {instance} of type {t} and {ignored}");
+            });
+        }
+
+        public static Func<IDependencyContext, Type, object> Construct(Type type, IObjectDescription instantiate, IObjectDescription initializeValues)
+        {
+            var factory = InstantiateInitialize(type, instantiate, initializeValues);
+            return (context, t) => factory(context, t, _ => { });
+        }
+
+        public static Func<IDependencyContext, Type, object> Construct(Type type, IObjectDescription description)
+        {
+            var factory = InstantiateInitialize(type, description);
             return (context, t) => factory(context, t, _ => { });
         }
 

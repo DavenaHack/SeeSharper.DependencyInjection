@@ -55,6 +55,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Instantiati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeResolver", "..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\Mimp.SeeSharper.TypeResolver.csproj", "{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ObjectDescription", "ObjectDescription", "{734D7489-8A65-4611-A4C7-39DF4EC5C17A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.ObjectDescription.Abstraction", "..\libs\ObjectDescription\src\Mimp.SeeSharper.ObjectDescription.Abstraction\Mimp.SeeSharper.ObjectDescription.Abstraction.csproj", "{2B9F8D82-C3C4-4E5C-B270-FE0D21C91728}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.ObjectDescription.Extensions.Configuration", "..\libs\ObjectDescription\src\Mimp.SeeSharper.ObjectDescription.Extensions.Configuration\Mimp.SeeSharper.ObjectDescription.Extensions.Configuration.csproj", "{02A6A2E6-1AB3-45BF-BFA2-2FC8B9E679F0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.ObjectDescription", "..\libs\ObjectDescription\src\Mimp.SeeSharper.ObjectDescription\Mimp.SeeSharper.ObjectDescription.csproj", "{DCBCFC9B-EB3B-4FE9-A98A-E5D64B10DDF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +153,18 @@ Global
 		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B9F8D82-C3C4-4E5C-B270-FE0D21C91728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B9F8D82-C3C4-4E5C-B270-FE0D21C91728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B9F8D82-C3C4-4E5C-B270-FE0D21C91728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B9F8D82-C3C4-4E5C-B270-FE0D21C91728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02A6A2E6-1AB3-45BF-BFA2-2FC8B9E679F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02A6A2E6-1AB3-45BF-BFA2-2FC8B9E679F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02A6A2E6-1AB3-45BF-BFA2-2FC8B9E679F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02A6A2E6-1AB3-45BF-BFA2-2FC8B9E679F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCBCFC9B-EB3B-4FE9-A98A-E5D64B10DDF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCBCFC9B-EB3B-4FE9-A98A-E5D64B10DDF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCBCFC9B-EB3B-4FE9-A98A-E5D64B10DDF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCBCFC9B-EB3B-4FE9-A98A-E5D64B10DDF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -163,6 +183,10 @@ Global
 		{17718874-547C-4BC0-A61B-DA554663DC29} = {FF2664C2-3776-4C9A-9811-88D6B4F3CF33}
 		{A447E50C-2317-4A86-AC65-FA25D27ED9A4} = {FF2664C2-3776-4C9A-9811-88D6B4F3CF33}
 		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86} = {3E466CCB-D458-405B-BF11-D3CDCB20FCD6}
+		{734D7489-8A65-4611-A4C7-39DF4EC5C17A} = {2DE55B5A-5A75-459F-9728-9B09DB610327}
+		{2B9F8D82-C3C4-4E5C-B270-FE0D21C91728} = {734D7489-8A65-4611-A4C7-39DF4EC5C17A}
+		{02A6A2E6-1AB3-45BF-BFA2-2FC8B9E679F0} = {734D7489-8A65-4611-A4C7-39DF4EC5C17A}
+		{DCBCFC9B-EB3B-4FE9-A98A-E5D64B10DDF7} = {734D7489-8A65-4611-A4C7-39DF4EC5C17A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E4B03365-59DA-4B0C-8660-C595DA6197DD}

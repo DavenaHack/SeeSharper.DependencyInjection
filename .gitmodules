@@ -14,5 +14,9 @@
 	path = libs/Instantiation
 	url = https://github.com/DavenaHack/SeeSharper.Instantiation.git
 	branch = master
+[submodule "libs/ObjectDescription"]
+	path = libs/ObjectDescription
+	url = https://github.com/DavenaHack/SeeSharper.ObjectDescription.git
+	branch = master
 [submodule]
 	update = --init --recursive
