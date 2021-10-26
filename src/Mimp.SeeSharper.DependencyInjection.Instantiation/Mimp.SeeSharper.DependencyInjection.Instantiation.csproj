@@ -28,8 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="Mimp.SeeSharper.Instantiation" Version="[1.0.0,]" />
-    <PackageReference Include="Mimp.SeeSharper.Instantiation.Abstraction" Version="[1.0.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.Instantiation" Version="[2.0.0,]" />
+    <PackageReference Include="Mimp.SeeSharper.Instantiation.Abstraction" Version="[2.1.0,]" />
     <PackageReference Include="Mimp.SeeSharper.Instantiation.TypeResolver" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.ObjectDescription" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.ObjectDescription.Abstraction" Version="[1.0.0,]" />
