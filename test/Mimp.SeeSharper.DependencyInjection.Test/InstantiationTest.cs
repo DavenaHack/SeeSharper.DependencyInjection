@@ -3,6 +3,7 @@ using Mimp.SeeSharper.DependencyInjection.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Instantiation;
 using Mimp.SeeSharper.DependencyInjection.Singleton;
 using Mimp.SeeSharper.DependencyInjection.Test.Mock;
+using Mimp.SeeSharper.ObjectDescription;
 using System.Collections.Generic;
 
 namespace Mimp.SeeSharper.DependencyInjection.Test
@@ -20,9 +21,8 @@ namespace Mimp.SeeSharper.DependencyInjection.Test
             using var provider = new DependencyProvider(
                 new DependencySourceBuilder()
                     .AddSingleton<DisposeObject>()
-                    .AddSingletonInstantiation<ObjectWithDependency>(new List<KeyValuePair<string?, object?>> {
-                        new KeyValuePair<string?, object?>(nameof(ObjectWithDependency.StringProperty), stringValue)
-                    }, null)
+                    .AddSingletonInstantiation<ObjectWithDependency>(ObjectDescriptions.EmptyDescription
+                        .Append(nameof(ObjectWithDependency.StringProperty), stringValue))
                     .UseInstantiator()
                     .BuildSource(),
                 new DependencyMatcher(),

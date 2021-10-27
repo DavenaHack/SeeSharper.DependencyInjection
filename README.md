@@ -156,9 +156,7 @@ public static void AddInstantiations(IDependencySourceBuilder builder)
   
   builder.AddSingleton<IMyDependency, MyDependency>();
   builder.AddScoped<IMyDependency, MyDependency>();
-  builder.AddTransient<IMyDependency, MyDependency>(new Dictionary<string, object>{
-    { "Parameter", "Value" }
-  });
+  builder.AddTransient<IMyDependency, MyDependency>();
 }
 ```
 

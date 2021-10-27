@@ -7,6 +7,7 @@ using Mimp.SeeSharper.DependencyInjection.Scope.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Singleton;
 using Mimp.SeeSharper.DependencyInjection.Tag.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Transient;
+using Mimp.SeeSharper.ObjectDescription.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,8 +52,8 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
                 throw new InvalidOperationException($"{type.Path} required a type.");
 
             var dependencyType = ResolveType(type.Value);
-            var instantiateValues = ConfigurationToInstantiateValues(dependencyConfiguration.GetSection("instantiate"));
-            var initializeValues = ConfigurationToInstantiateValues(dependencyConfiguration.GetSection("initialize"));
+            var instantiateValues = dependencyConfiguration.GetSection("instantiate").ToDescription();
+            var initializeValues = dependencyConfiguration.GetSection("initialize").ToDescription();
 
             return (lifetime.Value.ToLower()) switch
             {
@@ -70,16 +71,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
             };
         }
 
-        protected IDictionary<string, object> ConfigurationToInstantiateValues(IConfiguration configuration)
-        {
-            var dictionary = new Dictionary<string, object>();
-            foreach (var child in configuration.GetChildren())
-                dictionary[child.Key] = child.Value is not null ? child.Value
-                    : ConfigurationToInstantiateValues(child);
-            return dictionary;
-        }
-
-
+        
         protected virtual void ConfigureBuilder(IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             ConfigureTags(builder, rootConfiguration, dependencyConfiguration);

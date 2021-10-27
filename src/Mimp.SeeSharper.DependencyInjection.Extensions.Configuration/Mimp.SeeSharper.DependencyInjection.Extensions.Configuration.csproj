@@ -4,7 +4,7 @@
     <TargetFrameworks>net5.0;netcoreapp3.1;netcoreapp2.1;netstandard2.1;net48;net461</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <AssemblyName>Mimp.SeeSharper.DependencyInjection.Extensions.Configuration</AssemblyName>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
     <AssemblyTitle>SeeSharper DependencyInjection Extensions Configuration</AssemblyTitle>
     <Description>SeeSharper DependencyInjection Extensions Configuration is a IoC container which work with IoC pattern.</Description>
     <Authors>SeeSharper Contributors</Authors>
@@ -13,7 +13,7 @@
     <Copyright>Copyright © 2021 SeeSharper Contributors</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageId>Mimp.SeeSharper.DependencyInjection.Extensions.Configuration</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <PackageTags>seesharper;.net;dependency;injection;dependencyInjection;di;inversionOfControl;ioc</PackageTags>
     <PackageProjectUrl>https://github.com/DavenaHack/SeeSharper.DependencyInjection</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Mimp.SeeSharper.ObjectDescription.Extensions.Configuration" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeProvider" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeProvider.Abstraction" Version="[1.0.0,]" />
     <PackageReference Include="Mimp.SeeSharper.TypeResolver" Version="[1.0.0,]" />
@@ -40,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <ProjectReference Include="..\..\libs\ObjectDescription\src\Mimp.SeeSharper.ObjectDescription.Extensions.Configuration\Mimp.SeeSharper.ObjectDescription.Extensions.Configuration.csproj" />
     <ProjectReference Include="..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider\Mimp.SeeSharper.TypeProvider.csproj" />
     <ProjectReference Include="..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider.Abstraction\Mimp.SeeSharper.TypeProvider.Abstraction.csproj" />
     <ProjectReference Include="..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\Mimp.SeeSharper.TypeResolver.csproj" />
@@ -57,6 +59,7 @@
   </ItemGroup>
 
   <Target Name="ResolveDependencies" BeforeTargets="BeforeResolveReferences" Condition="'$(Configuration)' == 'Debug'">
+    <MSBuild Projects="..\..\libs\ObjectDescription\src\Mimp.SeeSharper.ObjectDescription.Extensions.Configuration\Mimp.SeeSharper.ObjectDescription.Extensions.Configuration.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
     <MSBuild Projects="..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider\Mimp.SeeSharper.TypeProvider.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
     <MSBuild Projects="..\..\libs\TypeProvider\src\Mimp.SeeSharper.TypeProvider.Abstraction\Mimp.SeeSharper.TypeProvider.Abstraction.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
     <MSBuild Projects="..\..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\Mimp.SeeSharper.TypeResolver.csproj" Targets="Restore;Build" Properties="Configuration=Debug" />
