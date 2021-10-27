@@ -22,7 +22,7 @@ namespace Mimp.SeeSharper.DependencyInjection
             }
             catch (Exception ex) when (ex is not InvalidInvokeException)
             {
-                throw new InvalidInvokeException(ex.Message, ex);
+                throw new InvalidInvokeException($"{factory} failed to construct with {context}.", ex);
             }
         }
 
