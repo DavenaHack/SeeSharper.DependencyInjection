@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Mimp.SeeSharper.DependencyInjection;
 using Mimp.SeeSharper.DependencyInjection.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Extensions.Configuration;
 using Mimp.SeeSharper.DependencyInjection.Scope;
+using Mimp.SeeSharper.DependencyInjection.Scope.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Singleton;
 using ServiceLibrary;
 
@@ -37,15 +39,17 @@ namespace AspNetCore.v3
             builder.AddSingleton<IBarService>(_ => new BarService("bar"));
 
             builder.AddScoped<IFooService>(_ => new FooService("foo1"))
-                .AddScope("scope1");
-            builder.AddScopedSource(sourceBuilder =>
-                sourceBuilder.AddSingleton<IBarService>(_ => new BarService("bar1")),
-                "scope1"
-            );
+                .AddScope(provider => provider.CreateScope("scope1"));
 
-            var subScope = SubScope.Create("scope1", "subscope1");
+            builder.AddSource(provider =>
+            {
+                var sourceBuilder = new DependencySourceBuilder();
+                sourceBuilder.AddSingleton<IBarService>(_ => new BarService("bar1"));
+                return sourceBuilder.BuildSource(provider).Scoped(provider.CreateScope("scope1"));
+            });
+
             builder.AddScoped<IFooService>(_ => new FooService("foo11"))
-                .AddScope(subScope);
+                .AddScope(provider => provider.CreateScope("scope1").Sub(provider.CreateScope("subscope1")));
 
             builder.AddConfigureSource(new ConfigurationBuilder().AddJsonFile("scope2.json").Build());
             builder.AddConfigureSource(new ConfigurationBuilder().AddJsonFile("scope22.json").Build());
