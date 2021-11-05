@@ -21,28 +21,32 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
         public Func<string, Type> ResolveType { get; }
 
 
-        public ConfigurationDependencyFactoryBuilder(Func<string, Type> resolveType)
+        public Func<IDependencyProvider, IConfigurationSection, IScope?> ResolveScope { get; }
+
+
+        public ConfigurationDependencyFactoryBuilder(Func<string, Type> resolveType, Func<IDependencyProvider, IConfigurationSection, IScope?> resolveScope)
         {
             ResolveType = resolveType ?? throw new ArgumentNullException(nameof(resolveType));
+            ResolveScope = resolveScope ?? throw new ArgumentNullException(nameof(resolveScope));
         }
 
 
-        public IDependencyFactory GetFactory(IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        public IDependencyFactory GetFactory(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             if (rootConfiguration is null)
                 throw new ArgumentNullException(nameof(rootConfiguration));
             if (dependencyConfiguration is null)
                 throw new ArgumentNullException(nameof(dependencyConfiguration));
 
-            var builder = GetBuilder(rootConfiguration, dependencyConfiguration);
+            var builder = GetBuilder(provider, rootConfiguration, dependencyConfiguration);
 
-            ConfigureBuilder(builder, rootConfiguration, dependencyConfiguration);
+            ConfigureBuilder(provider, builder, rootConfiguration, dependencyConfiguration);
 
-            return builder.BuildDependency();
+            return builder.BuildDependency(provider);
         }
 
 
-        protected virtual IDependencyBuilder GetBuilder(IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual IDependencyBuilder GetBuilder(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             var lifetime = dependencyConfiguration.GetSection("lifetime");
             if (lifetime.Value is null)
@@ -62,8 +66,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
                         InstantiationDependencySourceBuilderExtensions.InstantiateInitialize(dependencyType, instantiateValues, initializeValues)),
                 "scope" or "scoped" =>
                     new ScopeTypeDependencyBuilder(dependencyType,
-                        InstantiationDependencySourceBuilderExtensions.InstantiateInitialize(dependencyType, instantiateValues, initializeValues),
-                        ScopeDependencyProviderExtensions.UseScopeVerifier),
+                        InstantiationDependencySourceBuilderExtensions.InstantiateInitialize(dependencyType, instantiateValues, initializeValues)),
                 "transient" =>
                     new TransientTypeDependencyBuilder(dependencyType,
                         InstantiationDependencySourceBuilderExtensions.Construct(dependencyType, instantiateValues, initializeValues)),
@@ -71,17 +74,17 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
             };
         }
 
-        
-        protected virtual void ConfigureBuilder(IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+
+        protected virtual void ConfigureBuilder(IDependencyProvider provider, IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
-            ConfigureTags(builder, rootConfiguration, dependencyConfiguration);
-            ConfigureTypes(builder, rootConfiguration, dependencyConfiguration);
-            ConfigureTaggedTypes(builder, rootConfiguration, dependencyConfiguration);
-            ConfigureScopes(builder, rootConfiguration, dependencyConfiguration);
+            ConfigureTags(provider, builder, rootConfiguration, dependencyConfiguration);
+            ConfigureTypes(provider, builder, rootConfiguration, dependencyConfiguration);
+            ConfigureTaggedTypes(provider, builder, rootConfiguration, dependencyConfiguration);
+            ConfigureScopes(provider, builder, rootConfiguration, dependencyConfiguration);
         }
 
 
-        protected virtual IEnumerable<object> GetTags(IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual IEnumerable<object> GetTags(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             var tags = dependencyConfiguration.GetSection("tags");
             var i = 0;
@@ -95,24 +98,24 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
             }
         }
 
-        protected virtual void SetTags(ITagDependencyBuilder builder, IEnumerable<object> tags, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual void SetTags(IDependencyProvider provider, ITagDependencyBuilder builder, IEnumerable<object> tags, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             foreach (var tag in tags)
                 builder.Tag(tag);
         }
 
-        protected virtual void ConfigureTags(IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual void ConfigureTags(IDependencyProvider provider, IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
-            var tags = GetTags(rootConfiguration, dependencyConfiguration);
+            var tags = GetTags(provider, rootConfiguration, dependencyConfiguration);
             if (tags.Any())
                 if (builder is ITagDependencyBuilder tagBuilder)
-                    SetTags(tagBuilder, tags, rootConfiguration, dependencyConfiguration);
+                    SetTags(provider, tagBuilder, tags, rootConfiguration, dependencyConfiguration);
                 else
                     throw new NotSupportedException($"Tags are configured, but {builder} don't support it");
         }
 
 
-        protected virtual IEnumerable<Type> GetTypes(IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual IEnumerable<Type> GetTypes(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             var types = dependencyConfiguration.GetSection("types");
             var i = 0;
@@ -126,24 +129,24 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
             }
         }
 
-        protected virtual void SetTypes(ITypeDependencyBuilder builder, IEnumerable<Type> types, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual void SetTypes(IDependencyProvider provider, ITypeDependencyBuilder builder, IEnumerable<Type> types, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             foreach (var type in types)
                 builder.As(type);
         }
 
-        protected virtual void ConfigureTypes(IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual void ConfigureTypes(IDependencyProvider provider, IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
-            var types = GetTypes(rootConfiguration, dependencyConfiguration);
+            var types = GetTypes(provider, rootConfiguration, dependencyConfiguration);
             if (types.Any())
                 if (builder is ITypeDependencyBuilder typeBuilder)
-                    SetTypes(typeBuilder, types, rootConfiguration, dependencyConfiguration);
+                    SetTypes(provider, typeBuilder, types, rootConfiguration, dependencyConfiguration);
                 else
                     throw new NotSupportedException($"Types are configured, but {builder} don't support it");
         }
 
 
-        protected virtual IEnumerable<KeyValuePair<object, Type>> GetTaggedTypes(IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual IEnumerable<KeyValuePair<object, Type>> GetTaggedTypes(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             var types = dependencyConfiguration.GetSection("taggedTypes");
             foreach (var type in types.GetChildren())
@@ -154,51 +157,50 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
             }
         }
 
-        protected virtual void SetTaggedTypes(ITagTypeDependencyBuilder builder, IEnumerable<KeyValuePair<object, Type>> taggedTypes, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual void SetTaggedTypes(IDependencyProvider provider, ITagTypeDependencyBuilder builder, IEnumerable<KeyValuePair<object, Type>> taggedTypes, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             foreach (var pair in taggedTypes)
                 builder.As(pair.Key, pair.Value);
         }
 
-        protected virtual void ConfigureTaggedTypes(IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual void ConfigureTaggedTypes(IDependencyProvider provider, IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
-            var types = GetTaggedTypes(rootConfiguration, dependencyConfiguration);
+            var types = GetTaggedTypes(provider, rootConfiguration, dependencyConfiguration);
             if (types.Any())
                 if (builder is ITagTypeDependencyBuilder typeBuilder)
-                    SetTaggedTypes(typeBuilder, types, rootConfiguration, dependencyConfiguration);
+                    SetTaggedTypes(provider, typeBuilder, types, rootConfiguration, dependencyConfiguration);
                 else
                     throw new NotSupportedException($"Types are configured, but {builder} don't support it");
         }
 
 
-        protected virtual IEnumerable<object> GetScopes(IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual IEnumerable<IScope> GetScopes(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             var scopes = dependencyConfiguration.GetSection("scopes");
             var i = 0;
-            foreach (var scope in scopes.GetChildren())
+            foreach (var value in scopes.GetChildren())
             {
-                if (!int.TryParse(scope.Key, out var j) || i != j)
+                if (!int.TryParse(value.Key, out var j) || i != j)
                     throw new InvalidOperationException($"{scopes.Path} has to be a enumerable");
-                if (scope.Value is null)
-                    throw new InvalidOperationException($"{scope.Path} has to be a string");
 
-                var scopeParts = scope.Value.Split('.');
-                yield return scopeParts.Length > 1 ? SubScope.Create(scopeParts) : (object)scopeParts[0];
+                var scope = ResolveScope(provider, value);
+                if (scope is not null)
+                    yield return scope;
             }
         }
 
-        protected virtual void SetScopes(IScopeDependencyBuilder builder, IEnumerable<object> scopes, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual void SetScopes(IDependencyProvider provider, IScopeDependencyBuilder builder, IEnumerable<IScope> scopes, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             foreach (var scope in scopes)
                 builder.AddScope(scope);
         }
 
-        protected virtual void ConfigureScopes(IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        protected virtual void ConfigureScopes(IDependencyProvider provider, IDependencyBuilder builder, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
-            var scopes = GetScopes(rootConfiguration, dependencyConfiguration);
+            var scopes = GetScopes(provider, rootConfiguration, dependencyConfiguration);
             if (scopes.Any())
                 if (builder is IScopeDependencyBuilder scopeBuilder)
-                    SetScopes(scopeBuilder, scopes, rootConfiguration, dependencyConfiguration);
+                    SetScopes(provider, scopeBuilder, scopes, rootConfiguration, dependencyConfiguration);
                 else
                     throw new NotSupportedException($"Scopes are configured, but {builder} don't support it");
         }

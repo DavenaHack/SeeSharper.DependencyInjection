@@ -15,61 +15,59 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
 
         public Func<IDependencyContext, Type, Action<object>, object> Factory { get; }
 
-        public Action<IDependencyProvider, Action<IScopeVerifier>> Verifier { get; }
+        public IEnumerable<KeyValuePair<Type?, Func<IDependencyProvider, object>>> Tags { get; }
 
-        public IEnumerable<KeyValuePair<Type?, object>> Tags { get; }
-
-        public IEnumerable<object?> Scopes { get; }
+        public IEnumerable<Func<IDependencyProvider, IScope>> Scopes { get; }
 
         public IEnumerable<Type> Types { get; }
 
 
         public ScopeTypeDependencyBuilder(
             Type type,
-            Func<IDependencyContext, Type, Action<object>, object> factory,
-            Action<IDependencyProvider, Action<IScopeVerifier>> verifier
+            Func<IDependencyContext, Type, Action<object>, object> factory
         )
         {
             Type = type ?? throw new ArgumentNullException(nameof(type));
             Factory = factory ?? throw new ArgumentNullException(nameof(factory));
-            Verifier = verifier ?? throw new ArgumentNullException(nameof(verifier));
-            Tags = new List<KeyValuePair<Type?, object>>();
-            Scopes = new List<object?>();
+            Tags = new List<KeyValuePair<Type?, Func<IDependencyProvider, object>>>();
+            Scopes = new List<Func<IDependencyProvider, IScope>>();
             Types = new List<Type>();
         }
 
 
-        public ITagScopeTypeDependencyBuilder AddScope(object? scope)
+        public ITagScopeTypeDependencyBuilder AddScope(Func<IDependencyProvider, IScope> scope)
         {
             if (scope is null)
                 throw new ArgumentNullException(nameof(scope));
 
-            ((ICollection<object?>)Scopes).Add(scope);
+            ((ICollection<Func<IDependencyProvider, IScope>>)Scopes).Add(scope);
 
             return this;
         }
 
-        ITagScopeDependencyBuilder ITagScopeDependencyBuilder.AddScope(object? scope) => AddScope(scope);
+        ITagScopeDependencyBuilder ITagScopeDependencyBuilder.AddScope(Func<IDependencyProvider, IScope> scope) => AddScope(scope);
 
-        IScopeTypeDependencyBuilder IScopeTypeDependencyBuilder.AddScope(object? scope) => AddScope(scope);
+        IScopeTypeDependencyBuilder IScopeTypeDependencyBuilder.AddScope(Func<IDependencyProvider, IScope> scope) => AddScope(scope);
 
-        IScopeDependencyBuilder IScopeDependencyBuilder.AddScope(object? scope) => AddScope(scope);
+        IScopeDependencyBuilder IScopeDependencyBuilder.AddScope(Func<IDependencyProvider, IScope> scope) => AddScope(scope);
 
 
-        public ITagScopeTypeDependencyBuilder Tag(object tag)
+        public ITagScopeTypeDependencyBuilder Tag(Func<IDependencyProvider, object> tag)
         {
             if (tag is null)
                 throw new ArgumentNullException(nameof(tag));
 
-            ((ICollection<KeyValuePair<Type?, object>>)Tags)
-                .Add(new KeyValuePair<Type?, object>(null, tag));
+            ((ICollection<KeyValuePair<Type?, Func<IDependencyProvider, object>>>)Tags)
+                .Add(new KeyValuePair<Type?, Func<IDependencyProvider, object>>(null, tag));
 
             return this;
         }
 
-        ITagScopeDependencyBuilder ITagScopeDependencyBuilder.Tag(object tag) => Tag(tag);
+        ITagScopeDependencyBuilder ITagScopeDependencyBuilder.Tag(Func<IDependencyProvider, object> tag) => Tag(tag);
 
-        ITagDependencyBuilder ITagDependencyBuilder.Tag(object tag) => Tag(tag);
+        ITagDependencyBuilder ITagDependencyBuilder.Tag(Func<IDependencyProvider, object> tag) => Tag(tag);
+
+        ITagTypeTagDependencyBuilder ITagTypeTagDependencyBuilder.Tag(Func<IDependencyProvider, object> tag) => Tag(tag);
 
 
         public ITagScopeTypeDependencyBuilder As(Type type)
@@ -88,31 +86,46 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
 
         ITypeDependencyBuilder ITypeDependencyBuilder.As(Type type) => As(type);
 
+        ITagTypeTagDependencyBuilder ITagTypeTagDependencyBuilder.As(Type type) => As(type);
 
-        public ITagScopeTypeDependencyBuilder As(object tag, Type type)
+
+        public ITagScopeTypeDependencyBuilder As(Func<IDependencyProvider, object> tag, Type type)
         {
             if (tag is null)
                 throw new ArgumentNullException(nameof(tag));
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
 
-            ((ICollection<KeyValuePair<Type?, object>>)Tags)
-                .Add(new KeyValuePair<Type?, object>(type, tag));
+            ((ICollection<KeyValuePair<Type?, Func<IDependencyProvider, object>>>)Tags)
+                .Add(new KeyValuePair<Type?, Func<IDependencyProvider, object>>(type, tag));
 
             return this;
         }
 
-        ITagTypeDependencyBuilder ITagTypeDependencyBuilder.As(object tag, Type type) => As(tag, type);
+        ITagTypeDependencyBuilder ITagTypeDependencyBuilder.As(Func<IDependencyProvider, object> tag, Type type) => As(tag, type);
 
+        ITagTypeTagDependencyBuilder ITagTypeTagDependencyBuilder.As(Func<IDependencyProvider, object> tag, Type type) => As(tag, type);
 
-        public IDependencyFactory BuildDependency()
+        public IDependencyFactory BuildDependency(IDependencyProvider provider)
         {
+            if (provider is null)
+                throw new ArgumentNullException(nameof(provider));
+
+            var scopes = Scopes.Select(scope => scope(provider)
+                ?? throw new NullReferenceException("At least one of the scope function return null."));
+            if (!scopes.Any())
+                scopes = new[] { DependencyInjection.Scope.Scopes.Any };
+            var scope = new SeparateOrScope(scopes.ToArray());
+
             var constructible = BaseDependencyFactory.TypeConstructible(Types.Any() ? Types : new[] { Type });
-            var isScope = ScopeDependencyFactory.IsScopes(Scopes.Any() ? Scopes : new object?[] { null });
             return Tags.Any()
-                ? new TagScopeDependencyFactory(constructible, Factory, Verifier, isScope,
-                    TagDependencyProviderExtensions.Tagged(Tags), true)
-                : new ScopeDependencyFactory(constructible, Factory, Verifier, isScope, true);
+                ? new TagScopeDependencyFactory(constructible, Factory, scope,
+                    TagDependencyProviderExtensions.Tagged(Tags.Select(tag =>
+                    {
+                        return new KeyValuePair<Type?, object>(tag.Key, tag.Value(provider)
+                            ?? throw new NullReferenceException("At least one of the tag function return null."));
+                    })), true)
+                : new ScopeDependencyFactory(constructible, Factory, scope, true);
         }
 
 

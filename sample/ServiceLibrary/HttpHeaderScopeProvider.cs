@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ServiceLibrary
 {
-    public class HttpHeaderScopeProvider : IScopeProvider
+    public class HttpHeaderScopeProvider : BaseScopeProvider
     {
 
 
@@ -19,23 +19,18 @@ namespace ServiceLibrary
         }
 
 
-        public object GetScope(IDependencyScope scope)
+        protected override IScope CreateScope(IDependencyScope scope)
         {
             var context = HttpContextAccessor.HttpContext;
             if (context is null)
-                return new object();
+                return scope.Provider.CreateScope(new object());
 
-            var scopes = context.Request.Headers["Scope"].FirstOrDefault();
-            if (scopes is null)
-                return new object();
+            var requestScope = context.Request.Headers["Scope"].FirstOrDefault();
+            if (requestScope is null)
+                return scope.Provider.CreateScope(new object());
 
-            var scopeParts = scopes.Split('.');
-            if (scopeParts.Length > 1)
-            {
-                return SubScope.Create(scopeParts);
-            }
-            else
-                return scopeParts[0];
+            return scope.Provider.UseScopeFactory(factory =>
+                Scopes.CreateScopeLeftRightWithPriority(factory, requestScope));
         }
 
 

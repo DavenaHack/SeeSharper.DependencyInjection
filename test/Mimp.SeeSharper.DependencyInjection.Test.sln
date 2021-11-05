@@ -59,6 +59,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.Instantiati
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.TypeResolver", "..\libs\TypeResolver\src\Mimp.SeeSharper.TypeResolver\Mimp.SeeSharper.TypeResolver.csproj", "{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ObjectDescription", "ObjectDescription", "{2511F7DA-449F-482D-AF0E-FB3E134FE5A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.ObjectDescription", "..\libs\ObjectDescription\src\Mimp.SeeSharper.ObjectDescription\Mimp.SeeSharper.ObjectDescription.csproj", "{6EC5DEA3-1435-4970-A5AA-F032BC2E3161}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.ObjectDescription.Abstraction", "..\libs\ObjectDescription\src\Mimp.SeeSharper.ObjectDescription.Abstraction\Mimp.SeeSharper.ObjectDescription.Abstraction.csproj", "{275ED1CF-2FBD-4606-81E5-5ECEA9491311}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mimp.SeeSharper.ObjectDescription.Extensions.Configuration", "..\libs\ObjectDescription\src\Mimp.SeeSharper.ObjectDescription.Extensions.Configuration\Mimp.SeeSharper.ObjectDescription.Extensions.Configuration.csproj", "{DC0B4D60-33D1-46D8-9C66-9B42701D32D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +161,18 @@ Global
 		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EC5DEA3-1435-4970-A5AA-F032BC2E3161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC5DEA3-1435-4970-A5AA-F032BC2E3161}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC5DEA3-1435-4970-A5AA-F032BC2E3161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC5DEA3-1435-4970-A5AA-F032BC2E3161}.Release|Any CPU.Build.0 = Release|Any CPU
+		{275ED1CF-2FBD-4606-81E5-5ECEA9491311}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{275ED1CF-2FBD-4606-81E5-5ECEA9491311}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{275ED1CF-2FBD-4606-81E5-5ECEA9491311}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{275ED1CF-2FBD-4606-81E5-5ECEA9491311}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC0B4D60-33D1-46D8-9C66-9B42701D32D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC0B4D60-33D1-46D8-9C66-9B42701D32D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC0B4D60-33D1-46D8-9C66-9B42701D32D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC0B4D60-33D1-46D8-9C66-9B42701D32D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +203,10 @@ Global
 		{17718874-547C-4BC0-A61B-DA554663DC29} = {FF2664C2-3776-4C9A-9811-88D6B4F3CF33}
 		{A447E50C-2317-4A86-AC65-FA25D27ED9A4} = {FF2664C2-3776-4C9A-9811-88D6B4F3CF33}
 		{54DC8D0F-B3E0-40FC-95E7-68EA8ACA9E86} = {3E466CCB-D458-405B-BF11-D3CDCB20FCD6}
+		{2511F7DA-449F-482D-AF0E-FB3E134FE5A5} = {2DE55B5A-5A75-459F-9728-9B09DB610327}
+		{6EC5DEA3-1435-4970-A5AA-F032BC2E3161} = {2511F7DA-449F-482D-AF0E-FB3E134FE5A5}
+		{275ED1CF-2FBD-4606-81E5-5ECEA9491311} = {2511F7DA-449F-482D-AF0E-FB3E134FE5A5}
+		{DC0B4D60-33D1-46D8-9C66-9B42701D32D9} = {2511F7DA-449F-482D-AF0E-FB3E134FE5A5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DD24A5F2-6FE0-4589-9516-683A4E90CD6F}

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mimp.SeeSharper.DependencyInjection.Abstraction;
+using System;
 
 namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
 {
@@ -6,21 +7,13 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
     {
 
 
-        public static IScopeTypeDependencyBuilder AsSelf(this IScopeTypeDependencyBuilder builder)
-        {
-            if (builder is null)
-                throw new ArgumentNullException(nameof(builder));
-
-            return builder.As(builder.Type);
-        }
-
         public static IScopeTypeDependencyBuilder As<TDependency>(this IScopeTypeDependencyBuilder builder)
             where TDependency : notnull
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
 
-            return builder.As(typeof(TDependency));
+            return builder.As<IScopeTypeDependencyBuilder, TDependency>();
         }
 
 

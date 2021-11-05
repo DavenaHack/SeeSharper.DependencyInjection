@@ -14,7 +14,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Transient
 
         public Func<IDependencyContext, Type, object> Factory { get; }
 
-        public IEnumerable<object> Tags { get; }
+        public IEnumerable<Func<IDependencyProvider, object>> Tags { get; }
 
 
         public TransientDependencyBuilder(
@@ -24,26 +24,33 @@ namespace Mimp.SeeSharper.DependencyInjection.Transient
         {
             Constructible = constructible ?? throw new ArgumentNullException(nameof(constructible));
             Factory = factory ?? throw new ArgumentNullException(nameof(factory));
-            Tags = new List<object>();
+            Tags = new List<Func<IDependencyProvider, object>>();
         }
 
 
-        public ITagDependencyBuilder Tag(object tag)
+        public ITagDependencyBuilder Tag(Func<IDependencyProvider, object> tag)
         {
             if (tag is null)
                 throw new ArgumentNullException(nameof(tag));
 
-            ((ICollection<object>)Tags).Add(tag);
+            ((ICollection<Func<IDependencyProvider, object>>)Tags).Add(tag);
 
             return this;
         }
 
 
-        public IDependencyFactory BuildDependency()
+        public IDependencyFactory BuildDependency(IDependencyProvider provider)
         {
+            if (provider is null)
+                throw new ArgumentNullException(nameof(provider));
+
             return Tags.Any() ?
                 new TagTransientDependencyFactory(Constructible, Factory,
-                    TagDependencyProviderExtensions.Tagged(Tags.Select(t => new KeyValuePair<Type?, object>(null, t))), true)
+                    TagDependencyProviderExtensions.Tagged(Tags.Select(tag =>
+                    {
+                        return new KeyValuePair<Type?, object>(null, tag(provider)
+                            ?? throw new NullReferenceException("At least one of the tag function return null."));
+                    })), true)
                 : new TransientDependencyFactory(Constructible, Factory, true);
         }
 

@@ -16,9 +16,8 @@ namespace Mimp.SeeSharper.DependencyInjection.Enumerable
 
         public EnumerableDependencyFactory(IEnumerable<IDependencyFactory> factories)
         {
-            Factories = factories?.ToArray() ?? throw new ArgumentNullException(nameof(factories));
-            if (Factories.Any(f => f is null))
-                throw new ArgumentNullException(nameof(factories), "At least one factory is null.");
+            Factories = factories?.Select(f => f ?? throw new ArgumentNullException(nameof(factories), "At least one factory is null."))?.ToArray()
+                ?? throw new ArgumentNullException(nameof(factories));
         }
 
 
@@ -45,6 +44,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Enumerable
 
             return new EnumerableDependency(values, dependencies);
         }
+
 
         public void Dispose(IDependencyProvider provider)
         {

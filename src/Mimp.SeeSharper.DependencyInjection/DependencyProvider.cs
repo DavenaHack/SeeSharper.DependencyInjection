@@ -16,6 +16,16 @@ namespace Mimp.SeeSharper.DependencyInjection
         public IDependencyInvoker Invoker { get; }
 
 
+        public DependencyProvider(IDependencySourceBuilder builder, IDependencySource source, IDependencyMatcher matcher, IDependencySelector selector, IDependencyInvoker invoker)
+            : this(source, matcher, selector, invoker)
+        {
+            var builderSource = (builder ?? throw new ArgumentNullException(nameof(builder)))
+                .BuildSource(this)
+                    ?? throw new ArgumentNullException(nameof(builder), $"{builder} return null.");
+            Source = new UnionDependencySource(Source, builderSource);
+        }
+
+
         public DependencyProvider(IDependencySource source, IDependencyMatcher matcher, IDependencySelector selector, IDependencyInvoker invoker)
         {
             Source = source ?? throw new ArgumentNullException(nameof(source));

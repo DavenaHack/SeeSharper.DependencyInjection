@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Mimp.SeeSharper.DependencyInjection.Abstraction;
+using Mimp.SeeSharper.DependencyInjection.Tag.Abstraction;
+using System;
 
 namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
 {
@@ -6,30 +8,24 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
     {
 
 
-        public static ITagScopeTypeDependencySourceBuilder AsSelf(this ITagScopeTypeDependencySourceBuilder builder)
-        {
-            if (builder is null)
-                throw new ArgumentNullException(nameof(builder));
-
-            return builder.As(builder.Type);
-        }
-
         public static ITagScopeTypeDependencySourceBuilder As<TDependency>(this ITagScopeTypeDependencySourceBuilder builder)
             where TDependency : notnull
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
 
-            return builder.As(typeof(TDependency));
+            return builder.As<ITagScopeTypeDependencySourceBuilder, TDependency>();
         }
 
-
-        public static ITagScopeTypeDependencySourceBuilder AsSelf(this ITagScopeTypeDependencySourceBuilder builder, object tag)
+        public static ITagScopeTypeDependencySourceBuilder As<TDependency>(this ITagScopeTypeDependencySourceBuilder builder, Func<IDependencyProvider, object> tag)
+            where TDependency : notnull
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
+            if (tag is null)
+                throw new ArgumentNullException(nameof(tag));
 
-            return builder.As(tag, builder.Type);
+            return builder.As<ITagScopeTypeDependencySourceBuilder, TDependency>(tag);
         }
 
         public static ITagScopeTypeDependencySourceBuilder As<TDependency>(this ITagScopeTypeDependencySourceBuilder builder, object tag)
@@ -40,7 +36,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
             if (tag is null)
                 throw new ArgumentNullException(nameof(tag));
 
-            return builder.As(tag, typeof(TDependency));
+            return builder.As<ITagScopeTypeDependencySourceBuilder, TDependency>(tag);
         }
 
 

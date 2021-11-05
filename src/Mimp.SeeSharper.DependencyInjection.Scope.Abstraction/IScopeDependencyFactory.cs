@@ -6,7 +6,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
     {
 
 
-        public object? Scope { get; }
+        public IScope Scope { get; }
 
 
     }

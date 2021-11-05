@@ -9,18 +9,18 @@ namespace Mimp.SeeSharper.DependencyInjection
     {
 
 
-        private ICollection<Func<IDependencyFactory>> _factories;
-        private readonly ICollection<Func<IDependencySource>> _sources;
+        private ICollection<Func<IDependencyProvider, IDependencyFactory>> _factories;
+        private readonly ICollection<Func<IDependencyProvider, IDependencySource>> _sources;
 
 
         public DependencySourceBuilder()
         {
-            _factories = new List<Func<IDependencyFactory>>();
-            _sources = new List<Func<IDependencySource>>();
+            _factories = new List<Func<IDependencyProvider, IDependencyFactory>>();
+            _sources = new List<Func<IDependencyProvider, IDependencySource>>();
         }
 
 
-        public IDependencySourceBuilder AddDependency(Func<IDependencyFactory> factory)
+        public IDependencySourceBuilder AddDependency(Func<IDependencyProvider, IDependencyFactory> factory)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -30,7 +30,7 @@ namespace Mimp.SeeSharper.DependencyInjection
             return this;
         }
 
-        public IDependencySourceBuilder AddSource(Func<IDependencySource> source)
+        public IDependencySourceBuilder AddSource(Func<IDependencyProvider, IDependencySource> source)
         {
             if (source is null)
                 throw new ArgumentNullException(nameof(source));
@@ -48,16 +48,19 @@ namespace Mimp.SeeSharper.DependencyInjection
                 lock (_factories)
                 {
                     var factories = _factories;
-                    _sources.Add(() => new DependencySource(factories.Select(f => f())));
-                    _factories = new List<Func<IDependencyFactory>>();
+                    _sources.Add(provider => new DependencySource(factories.Select(f => f(provider))));
+                    _factories = new List<Func<IDependencyProvider, IDependencyFactory>>();
                 }
         }
 
 
-        public IDependencySource BuildSource()
+        public IDependencySource BuildSource(IDependencyProvider provider)
         {
+            if (provider is null)
+                throw new ArgumentNullException(nameof(provider));
+
             FlushFactories();
-            return new UnionDependencySource(_sources.Select(s => s()));
+            return new UnionDependencySource(_sources.Select(s => s(provider)));
         }
 
 

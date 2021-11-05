@@ -14,9 +14,8 @@ namespace Mimp.SeeSharper.DependencyInjection
 
         public IntersectDependencyMatcher(IEnumerable<IDependencyMatcher> matchers)
         {
-            Matchers = matchers?.ToArray() ?? throw new ArgumentNullException(nameof(matchers));
-            if (Matchers.Any(m => m is null))
-                throw new ArgumentNullException(nameof(matchers), "At least on matcher is null");
+            Matchers = matchers?.Select(m => m ?? throw new ArgumentNullException(nameof(matchers), "At least on matcher is null"))?.ToArray()
+                ?? throw new ArgumentNullException(nameof(matchers));
         }
 
         public IntersectDependencyMatcher(params IDependencyMatcher[] matchers)
@@ -32,8 +31,10 @@ namespace Mimp.SeeSharper.DependencyInjection
             if (factories is null)
                 throw new ArgumentNullException(nameof(factories));
 
-            return Matchers.Select(m => m.Match(provider, context, dependencyType, factories))
-                .Aggregate((a, b) => a.Intersect(b));
+            foreach (var matcher in Matchers)
+                factories = matcher.Match(provider, context, dependencyType, factories);
+
+            return factories;
         }
 
 

@@ -6,11 +6,12 @@ namespace Mimp.SeeSharper.DependencyInjection.Abstraction
     {
 
 
-        public IDependencySourceBuilder AddSource(Func<IDependencySource> source);
+        public IDependencySourceBuilder AddSource(Func<IDependencyProvider, IDependencySource> source);
 
-        public IDependencySourceBuilder AddDependency(Func<IDependencyFactory> factory);
+        public IDependencySourceBuilder AddDependency(Func<IDependencyProvider, IDependencyFactory> factory);
 
-        public IDependencySource BuildSource();
+
+        public IDependencySource BuildSource(IDependencyProvider provider);
 
 
     }

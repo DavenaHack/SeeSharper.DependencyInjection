@@ -20,7 +20,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection
 
         public IServiceScope CreateScope()
         {
-            var scope = Provider.CreateScope();
+            var scope = Provider.CreateDependencyScope();
             return new DependencyServiceScope(new DependencyServiceProvider(scope.Provider), scope);
         }
 

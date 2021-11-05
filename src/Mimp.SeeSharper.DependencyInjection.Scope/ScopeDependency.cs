@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mimp.SeeSharper.DependencyInjection.Scope.Abstraction;
+using System;
 
 namespace Mimp.SeeSharper.DependencyInjection.Scope
 {
@@ -6,10 +7,10 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
     {
 
 
-        public object Scope { get; }
+        public IScope Scope { get; }
 
 
-        public ScopeDependency(object scope, object dependency)
+        public ScopeDependency(IScope scope, object dependency)
             : base(dependency)
         {
             Scope = scope ?? throw new ArgumentNullException(nameof(scope));

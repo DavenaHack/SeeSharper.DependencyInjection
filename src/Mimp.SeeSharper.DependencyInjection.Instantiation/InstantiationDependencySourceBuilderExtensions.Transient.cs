@@ -11,7 +11,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
     {
 
 
-        public static ITagTypeDependencySourceBuilder AddTransientInstantiation(this IDependencySourceBuilder builder, Type type,
+        public static ITagTypeTagDependencySourceBuilder AddTransientInstantiation(this IDependencySourceBuilder builder, Type type,
             IObjectDescription instantiate, IObjectDescription initialize)
         {
             if (builder is null)
@@ -29,7 +29,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
             );
         }
 
-        public static ITagTypeDependencySourceBuilder AddTransientInstantiation(this IDependencySourceBuilder builder, Type type, IObjectDescription description)
+        public static ITagTypeTagDependencySourceBuilder AddTransientInstantiation(this IDependencySourceBuilder builder, Type type, IObjectDescription description)
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
@@ -44,7 +44,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
             );
         }
 
-        public static ITagTypeDependencySourceBuilder AddTransient(this IDependencySourceBuilder builder, Type type)
+        public static ITagTypeTagDependencySourceBuilder AddTransient(this IDependencySourceBuilder builder, Type type)
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
@@ -55,7 +55,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
         }
 
 
-        public static ITagTypeDependencySourceBuilder AddTransientInstantiation<TDependency>(this IDependencySourceBuilder builder,
+        public static ITagTypeTagDependencySourceBuilder AddTransientInstantiation<TDependency>(this IDependencySourceBuilder builder,
             IObjectDescription instantiate, IObjectDescription initialize)
             where TDependency : notnull
         {
@@ -69,7 +69,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
             return builder.AddTransientInstantiation(typeof(TDependency), instantiate, initialize);
         }
 
-        public static ITagTypeDependencySourceBuilder AddTransientInstantiation<TDependency>(this IDependencySourceBuilder builder, IObjectDescription description)
+        public static ITagTypeTagDependencySourceBuilder AddTransientInstantiation<TDependency>(this IDependencySourceBuilder builder, IObjectDescription description)
             where TDependency : notnull
         {
             if (builder is null)
@@ -80,7 +80,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Instantiation
             return builder.AddTransientInstantiation(typeof(TDependency), description);
         }
 
-        public static ITagTypeDependencySourceBuilder AddTransient<TDependency>(this IDependencySourceBuilder builder)
+        public static ITagTypeTagDependencySourceBuilder AddTransient<TDependency>(this IDependencySourceBuilder builder)
             where TDependency : notnull
         {
             if (builder is null)

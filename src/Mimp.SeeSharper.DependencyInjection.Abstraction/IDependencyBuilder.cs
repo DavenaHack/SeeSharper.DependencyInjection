@@ -4,7 +4,7 @@
     {
 
 
-        IDependencyFactory BuildDependency();
+        IDependencyFactory BuildDependency(IDependencyProvider provider);
 
 
     }

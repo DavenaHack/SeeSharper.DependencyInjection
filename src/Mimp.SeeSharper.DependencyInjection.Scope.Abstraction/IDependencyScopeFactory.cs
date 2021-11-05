@@ -4,7 +4,7 @@
     {
 
 
-        public IDependencyScope CreateScope(IDependencyScopeContext context);
+        public IDependencyScope CreateDependencyScope(IScopeContext context);
 
 
     }

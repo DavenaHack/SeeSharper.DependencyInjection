@@ -7,7 +7,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
     {
 
 
-        public static IDependencyScope CreateScope(this IDependencyScopeFactory factory, Func<IDependencyScope, object> scope, IDependencyProvider parent)
+        public static IDependencyScope CreateDependencyScope(this IDependencyScopeFactory factory, Func<IDependencyScope, IScope> scope, IDependencyProvider parent)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -16,10 +16,10 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
             if (parent is null)
                 throw new ArgumentNullException(nameof(parent));
 
-            return factory.CreateScope(new DependencyScopeContext(scope, parent));
+            return factory.CreateDependencyScope(new ScopeContext(scope, parent));
         }
 
-        public static IDependencyScope CreateScope(this IDependencyScopeFactory factory, object scope, IDependencyProvider parent)
+        public static IDependencyScope CreateDependencyScope(this IDependencyScopeFactory factory, IScope scope, IDependencyProvider parent)
         {
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
@@ -28,7 +28,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
             if (parent is null)
                 throw new ArgumentNullException(nameof(parent));
 
-            return factory.CreateScope(_ => scope, parent);
+            return factory.CreateDependencyScope(_ => scope, parent);
         }
 
 

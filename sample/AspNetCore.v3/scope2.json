@@ -1,7 +1,7 @@
 {
   "sources": [
     {
-      "scopes": [ "scope2" ],
+      "scope": "scope2",
       "dependencies": [
         {
           "type": "BarService",

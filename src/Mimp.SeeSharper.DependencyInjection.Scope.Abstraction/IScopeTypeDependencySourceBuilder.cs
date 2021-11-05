@@ -9,7 +9,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
 
         public new IScopeTypeDependencySourceBuilder As(Type type);
 
-        public new IScopeTypeDependencySourceBuilder AddScope(object? scope);
+        public new IScopeTypeDependencySourceBuilder AddScope(Func<IDependencyProvider, IScope> scope);
 
 
     }

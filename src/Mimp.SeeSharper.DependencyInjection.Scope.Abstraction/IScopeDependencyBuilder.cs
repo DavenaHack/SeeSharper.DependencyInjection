@@ -1,4 +1,5 @@
 ﻿using Mimp.SeeSharper.DependencyInjection.Abstraction;
+using System;
 
 namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
 {
@@ -6,7 +7,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
     {
 
 
-        public IScopeDependencyBuilder AddScope(object? scope);
+        public IScopeDependencyBuilder AddScope(Func<IDependencyProvider, IScope> scope);
 
 
     }
