@@ -92,17 +92,18 @@ public static void AddScopes(IDependencySourceBuilder builder)
     // this step can skip and do all in factory method
     // it could be helpful when you need a bidirectional references has
     myDependency.IsInit = true;
-  }).AddScope("scope1")
-    .AddScope("scope2")
+  }).AddScope(provider => provider.CreateScope("scope1"))
+    .AddScope(provider => provider.CreateScope("scope2"))
     .As<IMyDependency>();
   
   // Add a source that applies only to the scope
-  builder.AddScopedSource(scopeBuilder => {
-      // add dependencies or other (scoped) sources
-    },
-    "scope3",
-    "scope4",
-  );
+  builder.AddSource(provider =>
+  {
+    var sourceBuilder = new DependencySourceBuilder();
+    // build your source ...
+    return sourceBuilder.BuildSource(provider)
+      .Scoped(provider.CreateScope("scope1"));
+  });
 }
 ```
 
