@@ -12,6 +12,14 @@ namespace Mimp.SeeSharper.DependencyInjection.Tag.Abstraction
         public static object TagVerifierTag { get; } = nameof(TagVerifierTag);
 
 
+        public static ITagVerifier GetTagVerifier(this IDependencyProvider provider)
+        {
+            if (provider is null)
+                throw new ArgumentNullException(nameof(provider));
+
+            return provider.GetDependencyRequired<ITagVerifier>(TagVerifierTag);
+        }
+
         public static void UseTagVerifier(this IDependencyProvider provider, Action<ITagVerifier> use)
         {
             if (provider is null)

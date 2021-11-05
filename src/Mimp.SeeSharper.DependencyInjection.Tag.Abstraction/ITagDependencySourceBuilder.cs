@@ -1,4 +1,5 @@
 ﻿using Mimp.SeeSharper.DependencyInjection.Abstraction;
+using System;
 
 namespace Mimp.SeeSharper.DependencyInjection.Tag.Abstraction
 {
@@ -6,7 +7,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Tag.Abstraction
     {
 
 
-        public new ITagDependencySourceBuilder Tag(object tag);
+        public new ITagDependencySourceBuilder Tag(Func<IDependencyProvider, object> tag);
 
 
     }

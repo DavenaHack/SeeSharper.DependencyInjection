@@ -9,7 +9,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Tag.Abstraction
 
         public new ITagTypeDependencyBuilder As(Type type);
 
-        public ITagTypeDependencyBuilder As(object tag, Type type);
+        public ITagTypeDependencyBuilder As(Func<IDependencyProvider, object> tag, Type type);
 
 
     }
