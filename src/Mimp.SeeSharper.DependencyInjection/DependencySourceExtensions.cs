@@ -16,7 +16,7 @@ namespace Mimp.SeeSharper.DependencyInjection
             if (sources is null)
                 throw new ArgumentNullException(nameof(sources));
 
-            return source.Union(sources.ToArray());
+            return new UnionDependencySource(new[] { source }.Concat(sources));
         }
 
         public static IDependencySource Union(this IDependencySource source, params IDependencySource[] sources)
@@ -24,7 +24,7 @@ namespace Mimp.SeeSharper.DependencyInjection
             if (source is null)
                 throw new ArgumentNullException(nameof(source));
 
-            return new UnionDependencySource(new[] { source }.Concat(sources));
+            return source.Union((IEnumerable<IDependencySource>)sources);
         }
 
 

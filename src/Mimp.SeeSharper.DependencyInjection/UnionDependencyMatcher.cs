@@ -14,9 +14,8 @@ namespace Mimp.SeeSharper.DependencyInjection
 
         public UnionDependencyMatcher(IEnumerable<IDependencyMatcher> matchers)
         {
-            Matchers = matchers?.ToArray() ?? throw new ArgumentNullException(nameof(matchers));
-            if (Matchers.Any(m => m is null))
-                throw new ArgumentNullException(nameof(matchers), "At least on matcher is null");
+            Matchers = matchers?.Select(m => m ?? throw new ArgumentNullException(nameof(matchers), "At least on matcher is null"))?.ToArray()
+                ?? throw new ArgumentNullException(nameof(matchers));
         }
 
         public UnionDependencyMatcher(params IDependencyMatcher[] matchers)

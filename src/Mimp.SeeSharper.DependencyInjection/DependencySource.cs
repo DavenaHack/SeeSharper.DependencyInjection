@@ -14,9 +14,8 @@ namespace Mimp.SeeSharper.DependencyInjection
 
         public DependencySource(IEnumerable<IDependencyFactory> factories)
         {
-            _factories = factories?.ToArray() ?? throw new ArgumentNullException(nameof(factories));
-            if (_factories.Any(f => f is null))
-                throw new ArgumentNullException(nameof(factories), "At least one factory is null");
+            _factories = factories?.Select(f => f ?? throw new ArgumentNullException(nameof(factories), "At least one factory is null"))?.ToArray() 
+                ?? throw new ArgumentNullException(nameof(factories));
         }
 
         public DependencySource(params IDependencyFactory[] factories)

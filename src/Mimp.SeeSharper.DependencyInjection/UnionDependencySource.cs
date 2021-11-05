@@ -14,9 +14,8 @@ namespace Mimp.SeeSharper.DependencyInjection
 
         public UnionDependencySource(IEnumerable<IDependencySource> sources)
         {
-            Sources = sources?.ToArray() ?? throw new ArgumentNullException(nameof(sources));
-            if (Sources.Any(s => s is null))
-                throw new ArgumentNullException(nameof(sources), "At least on source is null.");
+            Sources = sources?.Select(s => s ?? throw new ArgumentNullException(nameof(sources), "At least on source is null."))?.ToArray()
+                ?? throw new ArgumentNullException(nameof(sources));
         }
 
         public UnionDependencySource(params IDependencySource[] sources)

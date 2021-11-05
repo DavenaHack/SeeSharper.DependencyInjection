@@ -16,7 +16,7 @@ namespace Mimp.SeeSharper.DependencyInjection
             if (matchers is null)
                 throw new ArgumentNullException(nameof(matchers));
 
-            return matcher.Union(matchers.ToArray());
+            return new UnionDependencyMatcher(new[] { matcher }.Concat(matchers));
         }
 
         public static IDependencyMatcher Union(this IDependencyMatcher matcher, params IDependencyMatcher[] matchers)
@@ -24,7 +24,7 @@ namespace Mimp.SeeSharper.DependencyInjection
             if (matcher is null)
                 throw new ArgumentNullException(nameof(matcher));
 
-            return new UnionDependencyMatcher(new[] { matcher }.Concat(matchers));
+            return matcher.Union((IEnumerable<IDependencyMatcher>)matchers);
         }
 
 
@@ -35,7 +35,7 @@ namespace Mimp.SeeSharper.DependencyInjection
             if (matchers is null)
                 throw new ArgumentNullException(nameof(matchers));
 
-            return matcher.Intersect(matchers.ToArray());
+            return new IntersectDependencyMatcher(new[] { matcher }.Concat(matchers));
         }
 
         public static IDependencyMatcher Intersect(this IDependencyMatcher matcher, params IDependencyMatcher[] matchers)
@@ -43,7 +43,7 @@ namespace Mimp.SeeSharper.DependencyInjection
             if (matcher is null)
                 throw new ArgumentNullException(nameof(matcher));
 
-            return new IntersectDependencyMatcher(new[] { matcher }.Concat(matchers));
+            return matcher.Intersect((IEnumerable<IDependencyMatcher>)matchers);
         }
 
 

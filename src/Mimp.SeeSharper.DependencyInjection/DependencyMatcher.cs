@@ -14,6 +14,8 @@ namespace Mimp.SeeSharper.DependencyInjection
                 throw new ArgumentNullException(nameof(provider));
             if (context is null)
                 throw new ArgumentNullException(nameof(context));
+            if (dependencyType is null)
+                throw new ArgumentNullException(nameof(dependencyType));
             if (factories is null)
                 throw new ArgumentNullException(nameof(factories));
 
