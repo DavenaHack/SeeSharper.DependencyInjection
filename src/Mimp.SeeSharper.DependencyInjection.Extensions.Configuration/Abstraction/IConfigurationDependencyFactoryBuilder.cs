@@ -7,7 +7,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration.Abstracti
     {
 
 
-        public IDependencyFactory GetFactory(IConfiguration rootConfiguration, IConfiguration dependencyConfiguration);
+        public IDependencyFactory GetFactory(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration);
 
 
     }

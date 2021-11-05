@@ -7,7 +7,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration.Abstracti
     {
 
 
-        public IDependencySource GetSource(IConfiguration rootConfiguration, IConfiguration sourceConfiguration);
+        public IDependencySource GetSource(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration sourceConfiguration);
 
 
     }

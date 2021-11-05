@@ -54,17 +54,6 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection
 
             IDependencySourceBuilder builder = new DependencySourceBuilder();
 
-            builder.UseTagVerifier();
-            builder.UseScope();
-            builder.UseInstantiator();
-
-            builder.AddScoped(provider => provider);
-            builder.AddScoped<DependencyServiceProvider>()
-                .As<IServiceProvider>();
-
-            builder.AddTransient<DependencyServiceScopeFactory>()
-                .As<IServiceScopeFactory>();
-
             static Func<IDependencyProvider, Type, object> WrapFactory(Func<IServiceProvider, object> factory) =>
                 (dependencyProvider, _) => dependencyProvider.Use<IServiceProvider, object>(provider => factory(provider));
 
@@ -128,11 +117,27 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.DependencyInjection
 
         public static IDependencyProvider GetDefaultProvider(IDependencySourceBuilder builder)
         {
+            var sourceBuilder = new DependencySourceBuilder();
+            sourceBuilder.UseTagVerifier();
+            sourceBuilder.UseScope();
+            sourceBuilder.UseInstantiator();
+
+            sourceBuilder.AddScoped(provider => provider);
+            sourceBuilder.AddScoped<DependencyServiceProvider>()
+                .As<IServiceProvider>();
+
+            sourceBuilder.AddTransient<DependencyServiceScopeFactory>()
+                .As<IServiceScopeFactory>();
+
+            var source = sourceBuilder.BuildSource(new EmptyDependencyProvider());
+
             return new DependencyProvider(
-                builder.BuildSource(),
+                builder,
+                source,
                 new FallbackEnumerableDependencyMatcher(
                     new DependencyMatcher()
-                        .Intersect(new TagDependencyMatcher())),
+                        .Intersect(new TagDependencyMatcher())
+                        .Intersect(new ScopeDependencyMatcher())),
                 new LastDependencySelector(),
                 new DependencyInvoker()
             );

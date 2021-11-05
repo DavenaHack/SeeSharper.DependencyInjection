@@ -2,9 +2,9 @@
 using Mimp.SeeSharper.DependencyInjection.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Extensions.Configuration.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Scope;
+using Mimp.SeeSharper.DependencyInjection.Scope.Abstraction;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
 {
@@ -15,33 +15,37 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
         public IConfigurationDependencyFactoryBuilder FactoryBuilder { get; }
 
 
-        public ConfigurationDependencySourceBuilder(IConfigurationDependencyFactoryBuilder factoryBuilder)
+        public Func<IDependencyProvider, IConfigurationSection, IScope?> ResolveScope { get; }
+
+
+        public ConfigurationDependencySourceBuilder(IConfigurationDependencyFactoryBuilder factoryBuilder, Func<IDependencyProvider, IConfigurationSection, IScope?> resolveScope)
         {
             FactoryBuilder = factoryBuilder ?? throw new ArgumentNullException(nameof(factoryBuilder));
+            ResolveScope = resolveScope ?? throw new ArgumentNullException(nameof(resolveScope));
         }
 
 
-        public virtual IDependencySource GetSource(IConfiguration rootConfiguration, IConfiguration sourceConfiguration)
+        public virtual IDependencySource GetSource(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration sourceConfiguration)
         {
             var builder = new DependencySourceBuilder();
 
-            foreach (var src in GetSources(rootConfiguration, sourceConfiguration))
+            foreach (var src in GetSources(provider, rootConfiguration, sourceConfiguration))
                 builder.AddSource(src);
 
-            foreach (var dependency in GetDependencies(rootConfiguration, sourceConfiguration))
+            foreach (var dependency in GetDependencies(provider, rootConfiguration, sourceConfiguration))
                 builder.AddDependency(dependency);
 
-            var source = builder.BuildSource();
+            var source = builder.BuildSource(provider);
 
-            var scopes = GetScopes(rootConfiguration, sourceConfiguration);
-            if (scopes.Any())
-                source = source.Scoped(scopes);
+            var scope = GetScope(provider, rootConfiguration, sourceConfiguration);
+            if (scope is not null)
+                source = source.Scoped(scope);
 
             return source;
         }
 
 
-        private IEnumerable<IDependencySource> GetSources(IConfiguration rootConfiguration, IConfiguration sourceConfiguration)
+        private IEnumerable<IDependencySource> GetSources(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration sourceConfiguration)
         {
             var sources = sourceConfiguration.GetSection("sources");
             var i = 0;
@@ -49,11 +53,11 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
             {
                 if (!int.TryParse(source.Key, out var j) || i != j)
                     throw new InvalidOperationException($"{sources.Path} has to be a enumerable");
-                yield return GetSource(rootConfiguration, source);
+                yield return GetSource(provider, rootConfiguration, source);
             }
         }
 
-        private IEnumerable<IDependencyFactory> GetDependencies(IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
+        private IEnumerable<IDependencyFactory> GetDependencies(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration dependencyConfiguration)
         {
             var dependencies = dependencyConfiguration.GetSection("dependencies");
             var i = 0;
@@ -61,25 +65,14 @@ namespace Mimp.SeeSharper.DependencyInjection.Extensions.Configuration
             {
                 if (!int.TryParse(source.Key, out var j) || i != j)
                     throw new InvalidOperationException($"{dependencies.Path} has to be a enumerable");
-                yield return FactoryBuilder.GetFactory(rootConfiguration, source);
+                yield return FactoryBuilder.GetFactory(provider, rootConfiguration, source);
             }
         }
 
 
-        protected virtual IEnumerable<object> GetScopes(IConfiguration rootConfiguration, IConfiguration sourceConfiguration)
+        protected virtual IScope? GetScope(IDependencyProvider provider, IConfiguration rootConfiguration, IConfiguration sourceConfiguration)
         {
-            var scopes = sourceConfiguration.GetSection("scopes");
-            var i = 0;
-            foreach (var scope in scopes.GetChildren())
-            {
-                if (!int.TryParse(scope.Key, out var j) || i != j)
-                    throw new InvalidOperationException($"{scopes.Path} has to be a enumerable");
-                if (scope.Value is null)
-                    throw new InvalidOperationException($"{scope.Path} has to be a string");
-
-                var scopeParts = scope.Value.Split('.');
-                yield return scopeParts.Length > 1 ? SubScope.Create(scopeParts) : (object)scopeParts[0];
-            }
+            return ResolveScope(provider, sourceConfiguration.GetSection("scope"));
         }
 
 
