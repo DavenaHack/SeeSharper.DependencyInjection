@@ -24,7 +24,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Test
                     .AddSingletonInstantiation<ObjectWithDependency>(ObjectDescriptions.EmptyDescription
                         .Append(nameof(ObjectWithDependency.StringProperty), stringValue))
                     .UseInstantiator()
-                    .BuildSource(),
+                    .BuildSource(new EmptyDependencyProvider()),
                 new DependencyMatcher(),
                 new LastDependencySelector(),
                 new DependencyInvoker()

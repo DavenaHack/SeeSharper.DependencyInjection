@@ -15,31 +15,31 @@ namespace Mimp.SeeSharper.DependencyInjection.Test
         [TestMethod]
         public void TestScope()
         {
-            object? scope = null;
-            var scope1 = new object();
-            var scope2 = new object();
-            var verifier = new ScopeVerifier();
-            var factory = new ScopeDependencyFactory((_, t) => t == typeof(object), (_, _, _) => new DisposeObject(), (_, a) => a(verifier), (c, v, _) => v.HasScope(c.Provider, scope), true);
-            var factory1 = new ScopeDependencyFactory((_, t) => t == typeof(DisposeObject), (_, _, _) => new DisposeObject(), (_, a) => a(verifier), (c, v, _) => v.HasScope(c.Provider, scope1), true);
-            var factory2 = new ScopeDependencyFactory((_, t) => t == typeof(DisposeObject), (_, _, _) => new DisposeObject(), (_, a) => a(verifier), (c, v, _) => v.HasScope(c.Provider, scope2), true);
-            var factory12 = new ScopeDependencyFactory((_, t) => t == typeof(IDisposable), (_, _, _) => new DisposeObject(), (_, a) => a(verifier), (c, v, _) => v.HasScope(c.Provider, scope1) || v.HasScope(c.Provider, scope2), true);
+            var factory = new ScopeFactory();
+            var scope1 = factory.CreateScope(new object());
+            var scope2 = factory.CreateScope(new object());
+            var factory0 = new ScopeDependencyFactory((_, t) => t == typeof(object), (_, _, _) => new DisposeObject(), Scopes.Any, true);
+            var factory1 = new ScopeDependencyFactory((_, t) => t == typeof(DisposeObject), (_, _, _) => new DisposeObject(), scope1, true);
+            var factory2 = new ScopeDependencyFactory((_, t) => t == typeof(DisposeObject), (_, _, _) => new DisposeObject(), scope2, true);
+            var factory12 = new ScopeDependencyFactory((_, t) => t == typeof(IDisposable), (_, _, _) => new DisposeObject(), new SeparateOrScope(scope1, scope2), true);
 
             using var root = new DependencyProvider(
                 new DependencySource(new IDependencyFactory[] {
-                    factory,
+                    factory0,
                     factory1,
                     factory2,
                     factory12
                 }),
-                new DependencyMatcher(),
+                new DependencyMatcher()
+                    .Intersect(new ScopeDependencyMatcher()),
                 new LastDependencySelector(),
                 new DependencyInvoker()
             );
             var scopeFactory = new DependencyScopeFactory();
 
-            using var scope10 = scopeFactory.CreateScope(scope1, root);
-            using var scope11 = scopeFactory.CreateScope(scope1, root);
-            using var scope20 = scopeFactory.CreateScope(scope2, root);
+            using var scope10 = scopeFactory.CreateDependencyScope(scope1, root);
+            using var scope11 = scopeFactory.CreateDependencyScope(scope1, root);
+            using var scope20 = scopeFactory.CreateDependencyScope(scope2, root);
 
             // null scope
             var value = root.ProvideRequired<object>().Dependency;
@@ -66,9 +66,9 @@ namespace Mimp.SeeSharper.DependencyInjection.Test
         [TestMethod]
         public void TestDispose()
         {
-            var scope = new object();
-            var verifier = new ScopeVerifier();
-            var factory = new ScopeDependencyFactory((_, t) => t == typeof(DisposeObject), (_, _, _) => new DisposeObject(), (_, a) => a(verifier), (c, v, _) => v.HasScope(c.Provider, scope), true);
+            var scopFactory = new ScopeFactory();
+            var scope = scopFactory.CreateScope(new object());
+            var factory = new ScopeDependencyFactory((_, t) => t == typeof(DisposeObject), (_, _, _) => new DisposeObject(), scope, true);
 
             using var root = new DependencyProvider(
                 new DependencySource(new IDependencyFactory[] {
@@ -78,23 +78,23 @@ namespace Mimp.SeeSharper.DependencyInjection.Test
                 new LastDependencySelector(),
                 new DependencyInvoker()
             );
-            var scopeFactory = new DependencyScopeFactory();
+            var depScopeFactory = new DependencyScopeFactory();
 
             DisposeObject dispose;
 
-            using (var dependencyScope = scopeFactory.CreateScope(scope, root))
+            using (var dependencyScope = depScopeFactory.CreateDependencyScope(scope, root))
             {
                 dispose = (DisposeObject)dependencyScope.Provider.ProvideRequired<DisposeObject>().Dependency;
 
                 Assert.IsFalse(dispose.Disposed);
 
-                using (var s = scopeFactory.CreateScope(scope, root))
+                using (var s = depScopeFactory.CreateDependencyScope(scope, root))
                     s.Provider.ProvideRequired<DisposeObject>();
                 Assert.IsFalse(dispose.Disposed);
             }
             Assert.IsTrue(dispose.Disposed);
 
-            using (var dependencyScope = scopeFactory.CreateScope(scope, root))
+            using (var dependencyScope = depScopeFactory.CreateDependencyScope(scope, root))
                 Assert.AreNotSame(dispose, dependencyScope.Provider.ProvideRequired<DisposeObject>().Dependency);
         }
 
