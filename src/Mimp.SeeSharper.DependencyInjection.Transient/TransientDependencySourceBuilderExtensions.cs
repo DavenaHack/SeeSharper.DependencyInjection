@@ -21,10 +21,10 @@ namespace Mimp.SeeSharper.DependencyInjection.Transient
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            var transient = new TransientDependencySourceBuilder(builder,
+            var transient = new TagDependencySourceBuilder(builder,
                 new TransientDependencyBuilder(constructible, factory));
 
-            builder.AddDependency(() => transient.BuildDependency());
+            builder.AddDependency(provider => transient.BuildDependency(provider));
 
             return transient;
         }
@@ -49,7 +49,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Transient
         }
 
 
-        public static ITagTypeDependencySourceBuilder AddTransient(
+        public static ITagTypeTagDependencySourceBuilder AddTransient(
             this IDependencySourceBuilder builder,
             Type type,
             Func<IDependencyContext, Type, object> factory
@@ -62,15 +62,15 @@ namespace Mimp.SeeSharper.DependencyInjection.Transient
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
 
-            var transient = new TransientTypeDependencySourceBuilder(builder,
+            var transient = new TagTypeTagDependencySourceBuilder(builder,
                 new TransientTypeDependencyBuilder(type, factory));
 
-            builder.AddDependency(() => transient.BuildDependency());
+            builder.AddDependency(provider => transient.BuildDependency(provider));
 
             return transient;
         }
 
-        public static ITagTypeDependencySourceBuilder AddTransient(
+        public static ITagTypeTagDependencySourceBuilder AddTransient(
             this IDependencySourceBuilder builder,
             Type type,
             Func<IDependencyProvider, Type, object> factory
@@ -90,7 +90,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Transient
         }
 
 
-        public static ITagTypeDependencySourceBuilder AddTransient<TDependency>(
+        public static ITagTypeTagDependencySourceBuilder AddTransient<TDependency>(
             this IDependencySourceBuilder builder,
             Func<IDependencyProvider, TDependency> factory
         ) where TDependency : notnull
