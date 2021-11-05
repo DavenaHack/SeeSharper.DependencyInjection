@@ -13,7 +13,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Abstraction
             if (source is null)
                 throw new ArgumentNullException(nameof(source));
 
-            return builder.AddSource(() => source);
+            return builder.AddSource(_ => source);
         }
 
         public static IDependencySourceBuilder AddDependency(this IDependencySourceBuilder builder, IDependencyFactory factory)
@@ -23,7 +23,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Abstraction
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            return builder.AddDependency(() => factory);
+            return builder.AddDependency(_ => factory);
         }
 
 
