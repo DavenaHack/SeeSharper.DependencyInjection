@@ -21,10 +21,10 @@ namespace Mimp.SeeSharper.DependencyInjection.Singleton
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            var singleton = new SingletonDependencySourceBuilder(builder, 
+            var singleton = new TagDependencySourceBuilder(builder,
                 new SingletonDependencyBuilder(constructible, factory));
 
-            builder.AddDependency(() => singleton.BuildDependency());
+            builder.AddDependency(provider => singleton.BuildDependency(provider));
 
             return singleton;
         }
@@ -66,7 +66,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Singleton
         }
 
 
-        public static ITagTypeDependencySourceBuilder AddSingleton(
+        public static ITagTypeTagDependencySourceBuilder AddSingleton(
             this IDependencySourceBuilder builder,
             Type type,
             Func<IDependencyContext, Type, Action<object>, object> factory
@@ -79,15 +79,15 @@ namespace Mimp.SeeSharper.DependencyInjection.Singleton
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
 
-            var singleton = new SingletonTypeDependencySourceBuilder(builder,
+            var singleton = new TagTypeTagDependencySourceBuilder(builder,
                 new SingletonTypeDependencyBuilder(type, factory));
 
-            builder.AddDependency(() => singleton.BuildDependency());
+            builder.AddDependency(provider => singleton.BuildDependency(provider));
 
             return singleton;
         }
 
-        public static ITagTypeDependencySourceBuilder AddSingleton(
+        public static ITagTypeTagDependencySourceBuilder AddSingleton(
             this IDependencySourceBuilder builder,
             Type type,
             Func<IDependencyProvider, Type, object> instantiate,
@@ -104,7 +104,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Singleton
             return builder.AddSingleton(type, BaseDependencyFactory.Construct(instantiate, initialize));
         }
 
-        public static ITagTypeDependencySourceBuilder AddSingleton(
+        public static ITagTypeTagDependencySourceBuilder AddSingleton(
             this IDependencySourceBuilder builder,
             Type type,
             Func<IDependencyProvider, Type, object> factory
@@ -121,7 +121,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Singleton
         }
 
 
-        public static ITagTypeDependencySourceBuilder AddSingleton<TDependency>(
+        public static ITagTypeTagDependencySourceBuilder AddSingleton<TDependency>(
             this IDependencySourceBuilder builder,
             Func<IDependencyProvider, TDependency> factory,
             Action<IDependencyProvider, TDependency>? initialize
@@ -139,7 +139,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Singleton
             );
         }
 
-        public static ITagTypeDependencySourceBuilder AddSingleton<TDependency>(
+        public static ITagTypeTagDependencySourceBuilder AddSingleton<TDependency>(
             this IDependencySourceBuilder builder,
             Func<IDependencyProvider, TDependency> factory
         ) where TDependency : notnull
