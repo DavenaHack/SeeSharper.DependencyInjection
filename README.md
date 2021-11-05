@@ -33,7 +33,8 @@ public class Program
       builder.BuildSource(),
       new FallbackEnumerableDependencyMatcher(
         new DependencyMatcher()
-          .Intersect(new TagDependencyMatcher())),
+          .Intersect(new TagDependencyMatcher())
+	  .Intersect(new ScopeDependencyMatcher()),
       new LastDependencySelector(),
       new DependencyInvoker()
     );
