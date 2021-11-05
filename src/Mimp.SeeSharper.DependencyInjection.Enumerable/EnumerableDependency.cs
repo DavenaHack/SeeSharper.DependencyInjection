@@ -15,9 +15,8 @@ namespace Mimp.SeeSharper.DependencyInjection.Enumerable
         public EnumerableDependency(object dependency, IEnumerable<IDependency> dependencies)
             : base(dependency)
         {
-            Dependencies = dependencies ?? throw new ArgumentNullException(nameof(dependencies));
-            if (Dependencies.Any(d => d is null))
-                throw new ArgumentNullException(nameof(dependencies), "At least one dependeny is null.");
+            Dependencies = dependencies?.Select(d => d ?? throw new ArgumentNullException(nameof(dependencies), "At least one dependeny is null."))?.ToArray()
+                ?? throw new ArgumentNullException(nameof(dependencies));
         }
 
 
