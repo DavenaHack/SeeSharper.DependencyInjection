@@ -4,7 +4,7 @@
     {
 
 
-        public object GetScope(IDependencyScope scope);
+        public IScope GetScope(IDependencyScope scope);
 
 
     }

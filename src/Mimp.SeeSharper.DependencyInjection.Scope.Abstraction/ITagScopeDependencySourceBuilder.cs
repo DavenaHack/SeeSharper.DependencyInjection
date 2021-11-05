@@ -1,4 +1,6 @@
-﻿using Mimp.SeeSharper.DependencyInjection.Tag.Abstraction;
+﻿using Mimp.SeeSharper.DependencyInjection.Abstraction;
+using Mimp.SeeSharper.DependencyInjection.Tag.Abstraction;
+using System;
 
 namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
 {
@@ -6,9 +8,9 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
     {
 
 
-        public new ITagScopeDependencySourceBuilder AddScope(object? scope);
+        public new ITagScopeDependencySourceBuilder AddScope(Func<IDependencyProvider, IScope> scope);
 
-        public new ITagScopeDependencySourceBuilder Tag(object tag);
+        public new ITagScopeDependencySourceBuilder Tag(Func<IDependencyProvider, object> tag);
 
 
     }

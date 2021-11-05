@@ -1,98 +1,84 @@
-﻿using System;
+﻿using Mimp.SeeSharper.DependencyInjection.Abstraction;
+using Mimp.SeeSharper.DependencyInjection.Scope.Abstraction;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Mimp.SeeSharper.DependencyInjection.Scope
 {
-    public class SubScope : IEquatable<SubScope?>
+    public class SubScope : IScope
     {
 
 
-        public object Parent { get; }
+        public IScope Parent { get; }
 
-        public object Scope { get; }
+        public IScope Scope { get; }
 
 
-        public SubScope(object parent, object scope)
+        public SubScope(IScope parent, IScope scope)
         {
             Parent = parent ?? throw new ArgumentNullException(nameof(parent));
             Scope = scope ?? throw new ArgumentNullException(nameof(scope));
         }
 
 
-        public override bool Equals(object? obj)
+        public bool In(IScope scope)
         {
-            return Equals(obj as SubScope);
-        }
+            if (scope is null)
+                throw new ArgumentNullException(nameof(scope));
 
-        public bool Equals(SubScope? other)
-        {
-            return other is not null &&
-                   EqualityComparer<object>.Default.Equals(Parent, other.Parent) &&
-                   EqualityComparer<object>.Default.Equals(Scope, other.Scope);
-        }
+            if (scope is not SubScope subScope)
+                return Parent.In(scope);
 
+            var thatStack = GetReverseStack();
+            var scopeStack = subScope.GetReverseStack();
+            if (scopeStack.Count < thatStack.Count)
+                return false;
 
-        public override int GetHashCode()
-        {
-#if NETFRAMEWORK
-            int hashCode = -125621968;
-            hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(Parent);
-            hashCode = hashCode * -1521134295 + EqualityComparer<object>.Default.GetHashCode(Scope);
-            return hashCode;
-#else
-            return HashCode.Combine(Parent, Scope);
-#endif
+            while (thatStack.Count > 0)
+                if (!thatStack.Pop().In(scopeStack.Pop()))
+                    return false;
+
+            return true;
         }
 
 
-        public static bool operator ==(SubScope? left, SubScope? right)
+        protected Stack<IScope> GetReverseStack()
         {
-            return EqualityComparer<SubScope?>.Default.Equals(left, right);
+            var stack = new Stack<IScope>();
+
+            IScope current = this;
+            while (current is SubScope sub)
+            {
+                stack.Push(sub.Scope);
+                current = sub.Parent;
+            }
+            stack.Push(current);
+
+            return stack;
         }
 
-        public static bool operator !=(SubScope? left, SubScope? right)
-        {
-            return !(left == right);
-        }
 
-
-        public static SubScope Create(IEnumerable<object> scopes)
+        public virtual IScope? InvolvedScope(IDependencyContext context, IEnumerable<IScope> scopes)
         {
+            if (context is null)
+                throw new ArgumentNullException(nameof(context));
             if (scopes is null)
                 throw new ArgumentNullException(nameof(scopes));
 
-            void ThrowAtLeast() =>
-                throw new ArgumentException($"{nameof(scopes)} have to have at least 2 scopes.", nameof(scopes));
-            object ThrowNull() =>
-                throw new ArgumentNullException(nameof(scopes), "At least one scope is null.");
+            if (!In(context.GetScope()))
+                return null;
 
-            var enumerator = scopes.GetEnumerator();
-            if (!enumerator.MoveNext())
-                ThrowAtLeast();
-            var parent = enumerator.Current ?? ThrowNull();
+            foreach (var scope in scopes)
+                if (In(scope))
+                    return scope;
 
-            if (!enumerator.MoveNext())
-                ThrowAtLeast();
-
-            var subScope = new SubScope(parent, enumerator.Current ?? ThrowNull());
-            while (enumerator.MoveNext())
-                subScope = new SubScope(subScope, enumerator.Current ?? ThrowNull());
-
-            return subScope;
+            return this;
         }
 
-        public static SubScope Create(object parent, object scope, params object[] subScopes)
-        {
-            if (parent is null)
-                throw new ArgumentNullException(nameof(parent));
-            if (scope is null)
-                throw new ArgumentNullException(nameof(scope));
-            if (subScopes is null)
-                throw new ArgumentNullException(nameof(subScopes));
 
-            return Create(new[] { parent, scope }.Concat(
-                subScopes.Select(s => s ?? throw new ArgumentNullException(nameof(subScopes), "At least on subscope is null."))));
+        public override string ToString()
+        {
+            return Parent + "." + Scope;
         }
 
 

@@ -11,7 +11,7 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
         public event EventHandler? OnDisposed;
 
 
-        public object Scope { get; }
+        public IScope Scope { get; }
 
         public IScopeDependencyProvider Provider { get; }
 

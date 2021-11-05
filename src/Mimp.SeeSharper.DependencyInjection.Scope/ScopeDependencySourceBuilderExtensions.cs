@@ -1,9 +1,8 @@
 ﻿using Mimp.SeeSharper.DependencyInjection.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Scope.Abstraction;
 using Mimp.SeeSharper.DependencyInjection.Singleton;
+using Mimp.SeeSharper.DependencyInjection.Tag.Abstraction;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Mimp.SeeSharper.DependencyInjection.Scope
 {
@@ -11,48 +10,18 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
     {
 
 
-        public static IDependencySourceBuilder UseScopeVerifier(
-            this IDependencySourceBuilder builder,
-            Func<IDependencyProvider, IScopeVerifier> verifierFactory
-        )
-        {
-            if (builder is null)
-                throw new ArgumentNullException(nameof(builder));
-            if (verifierFactory is null)
-                throw new ArgumentNullException(nameof(verifierFactory));
-
-            return builder.AddSingleton(verifierFactory)
-                .Tag(ScopeDependencyProviderExtensions.ScopeVerifierTag);
-        }
-
-        public static IDependencySourceBuilder UseScopeVerifier(
-            this IDependencySourceBuilder builder
-        )
-        {
-            if (builder is null)
-                throw new ArgumentNullException(nameof(builder));
-
-            return builder.UseScopeVerifier(GetDefaultScopeVerifier);
-        }
-
-        public static IScopeVerifier GetDefaultScopeVerifier(IDependencyProvider provider)
-        {
-            return new ScopeVerifier();
-        }
-
-
         public static IDependencySourceBuilder UseScopeFactory(
             this IDependencySourceBuilder builder,
-            Func<IDependencyProvider, IDependencyScopeFactory> scopeFactoryFactory
+            Func<IDependencyProvider, IScopeFactory> scopeFactory
         )
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
-            if (scopeFactoryFactory is null)
-                throw new ArgumentNullException(nameof(scopeFactoryFactory));
+            if (scopeFactory is null)
+                throw new ArgumentNullException(nameof(scopeFactory));
 
-            return builder.AddSingleton(scopeFactoryFactory)
-                .Tag(ScopeDependencyProviderExtensions.ScopeFactoryTag);
+            return builder.AddSingleton(scopeFactory)
+                .Tag(Abstraction.ScopeDependencyProviderExtensions.ScopeFactoryTag);
         }
 
         public static IDependencySourceBuilder UseScopeFactory(
@@ -65,7 +34,37 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
             return builder.UseScopeFactory(GetDefaultScopeFactory);
         }
 
-        public static IDependencyScopeFactory GetDefaultScopeFactory(IDependencyProvider provider)
+        public static IScopeFactory GetDefaultScopeFactory(IDependencyProvider provider)
+        {
+            return new ScopeFactory();
+        }
+
+
+        public static IDependencySourceBuilder UseDependencyScopeFactory(
+            this IDependencySourceBuilder builder,
+            Func<IDependencyProvider, IDependencyScopeFactory> dependencyScopeFactory
+        )
+        {
+            if (builder is null)
+                throw new ArgumentNullException(nameof(builder));
+            if (dependencyScopeFactory is null)
+                throw new ArgumentNullException(nameof(dependencyScopeFactory));
+
+            return builder.AddSingleton(dependencyScopeFactory)
+                .Tag(Abstraction.ScopeDependencyProviderExtensions.DependencyScopeFactoryTag);
+        }
+
+        public static IDependencySourceBuilder UseDependencyScopeFactory(
+            this IDependencySourceBuilder builder
+        )
+        {
+            if (builder is null)
+                throw new ArgumentNullException(nameof(builder));
+
+            return builder.UseDependencyScopeFactory(GetDefaultDependencyScopeFactory);
+        }
+
+        public static IDependencyScopeFactory GetDefaultDependencyScopeFactory(IDependencyProvider provider)
         {
             return new DependencyScopeFactory();
         }
@@ -73,16 +72,16 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
 
         public static IDependencySourceBuilder UseScopeProvider(
             this IDependencySourceBuilder builder,
-            Func<IDependencyProvider, IScopeProvider> scopeProviderFactory
+            Func<IDependencyProvider, IScopeProvider> scopeProvider
         )
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
-            if (scopeProviderFactory is null)
-                throw new ArgumentNullException(nameof(scopeProviderFactory));
+            if (scopeProvider is null)
+                throw new ArgumentNullException(nameof(scopeProvider));
 
-            return builder.AddSingleton(scopeProviderFactory)
-                .Tag(ScopeDependencyProviderExtensions.ScopeProviderTag);
+            return builder.AddSingleton(scopeProvider)
+                .Tag(Abstraction.ScopeDependencyProviderExtensions.ScopeProviderTag);
         }
 
         public static IDependencySourceBuilder UseScopeProvider(
@@ -103,23 +102,23 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
 
         public static IDependencySourceBuilder UseScope(
             this IDependencySourceBuilder builder,
-            Func<IDependencyProvider, IScopeVerifier> verifierFactory,
-            Func<IDependencyProvider, IDependencyScopeFactory> scopeFactoryFactory,
+            Func<IDependencyProvider, IScopeFactory> scopeFactory,
+            Func<IDependencyProvider, IDependencyScopeFactory> dependencyScopeFactory,
             Func<IDependencyProvider, IScopeProvider> scopeProviderFactory
         )
         {
             if (builder is null)
                 throw new ArgumentNullException(nameof(builder));
-            if (verifierFactory is null)
-                throw new ArgumentNullException(nameof(verifierFactory));
-            if (scopeFactoryFactory is null)
-                throw new ArgumentNullException(nameof(scopeFactoryFactory));
+            if (scopeFactory is null)
+                throw new ArgumentNullException(nameof(scopeFactory));
+            if (dependencyScopeFactory is null)
+                throw new ArgumentNullException(nameof(dependencyScopeFactory));
             if (scopeProviderFactory is null)
                 throw new ArgumentNullException(nameof(scopeProviderFactory));
 
             return builder
-                .UseScopeVerifier(verifierFactory)
-                .UseScopeFactory(scopeFactoryFactory)
+                .UseScopeFactory(scopeFactory)
+                .UseDependencyScopeFactory(dependencyScopeFactory)
                 .UseScopeProvider(scopeProviderFactory);
         }
 
@@ -131,8 +130,8 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
                 throw new ArgumentNullException(nameof(builder));
 
             return builder
-                .UseScopeVerifier()
                 .UseScopeFactory()
+                .UseDependencyScopeFactory()
                 .UseScopeProvider();
         }
 
@@ -151,11 +150,11 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
             if (factory is null)
                 throw new ArgumentNullException(nameof(factory));
 
-            var scope = new ScopeDependencySourceBuilder(builder,
-                new ScopeDependencyBuilder(constructible, factory, ScopeDependencyProviderExtensions.UseScopeVerifier)
+            var scope = new TagScopeDependencySourceBuilder(builder,
+                new ScopeDependencyBuilder(constructible, factory)
             );
 
-            builder.AddDependency(() => scope.BuildDependency());
+            builder.AddDependency(provider => scope.BuildDependency(provider));
 
             return scope;
         }
@@ -210,10 +209,10 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
             if (type is null)
                 throw new ArgumentNullException(nameof(type));
 
-            var scope = new ScopeTypeDependencySourceBuilder(builder,
-                new ScopeTypeDependencyBuilder(type, factory, ScopeDependencyProviderExtensions.UseScopeVerifier));
+            var scope = new TagScopeTypeDependencySourceBuilder(builder,
+                new ScopeTypeDependencyBuilder(type, factory));
 
-            builder.AddDependency(() => scope.BuildDependency());
+            builder.AddDependency(provider => scope.BuildDependency(provider));
 
             return scope;
         }
@@ -281,49 +280,6 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
                 throw new ArgumentNullException(nameof(factory));
 
             return builder.AddScoped(factory, null);
-        }
-
-
-
-        public static IDependencySourceBuilder AddScopedSource(this IDependencySourceBuilder builder, Action<IDependencySourceBuilder> buildSource, Func<IDependencyProvider, IDependencyContext, bool> isScope)
-        {
-            if (builder is null)
-                throw new ArgumentNullException(nameof(builder));
-            if (buildSource is null)
-                throw new ArgumentNullException(nameof(buildSource));
-
-            return builder.AddSource(() =>
-            {
-                var builder = new DependencySourceBuilder();
-                buildSource(builder);
-                return builder.BuildSource().Scoped(isScope);
-            });
-        }
-
-        public static IDependencySourceBuilder AddScopedSource(this IDependencySourceBuilder builder, Action<IDependencySourceBuilder> buildSource, IEnumerable<object> scopes)
-        {
-            if (builder is null)
-                throw new ArgumentNullException(nameof(builder));
-            if (buildSource is null)
-                throw new ArgumentNullException(nameof(buildSource));
-            if (scopes is null)
-                throw new ArgumentNullException(nameof(scopes));
-
-            var isScope = ScopeDependencySource.IsScopes(scopes);
-
-            return builder.AddScopedSource(buildSource, isScope);
-        }
-
-        public static IDependencySourceBuilder AddScopedSource(this IDependencySourceBuilder builder, Action<IDependencySourceBuilder> buildSource, object scope, params object[] scopes)
-        {
-            if (builder is null)
-                throw new ArgumentNullException(nameof(builder));
-            if (buildSource is null)
-                throw new ArgumentNullException(nameof(buildSource));
-            if (scope is null)
-                throw new ArgumentNullException(nameof(scope));
-
-            return builder.AddScopedSource(buildSource, new[] { scope }.Concat(scopes));
         }
 
 

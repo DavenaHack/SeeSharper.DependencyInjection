@@ -3,11 +3,11 @@ using System;
 
 namespace Mimp.SeeSharper.DependencyInjection.Scope.Abstraction
 {
-    public interface IDependencyScopeContext
+    public interface IScopeContext
     {
 
 
-        public Func<IDependencyScope, object> Scope { get; }
+        public Func<IDependencyScope, IScope> Scope { get; }
 
         public IDependencyProvider Parent { get; }
 

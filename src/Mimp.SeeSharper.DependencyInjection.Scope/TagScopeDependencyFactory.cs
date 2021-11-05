@@ -15,11 +15,10 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
         public TagScopeDependencyFactory(
             Func<IDependencyContext, Type, bool> constructible,
             Func<IDependencyContext, Type, Action<object>, object> factory,
-            Action<IDependencyProvider, Action<IScopeVerifier>> verifier,
-            Func<IDependencyContext, IScopeVerifier, Type, bool> isScope,
+            IScope scope,
             Func<ITagDependencyContext, Type, bool> isTagged,
             bool disposeAutomatically
-        ) : base(constructible, factory, verifier, isScope, disposeAutomatically)
+        ) : base(constructible, factory, scope, disposeAutomatically)
         {
             IsTagged = isTagged ?? throw new ArgumentNullException(nameof(isTagged));
         }

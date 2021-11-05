@@ -12,16 +12,17 @@ namespace Mimp.SeeSharper.DependencyInjection.Scope
         public event EventHandler? OnDisposed;
 
 
-        private readonly Func<IDependencyScope, object> _scope;
-        public object Scope { get => _scope(this); }
+        private readonly Func<IDependencyScope, IScope> _scope;
+        public IScope Scope { get => _scope(this); }
 
         public IScopeDependencyProvider Provider { get; }
 
 
-        public DependencyScope(Func<IDependencyScope, object> scope, Func<IDependencyScope, IScopeDependencyProvider> providerFactory)
+        public DependencyScope(Func<IDependencyScope, IScope> scope, Func<IDependencyScope, IScopeDependencyProvider> providerFactory)
         {
             _scope = scope ?? throw new ArgumentNullException(nameof(scope));
-            Provider = (providerFactory ?? throw new ArgumentNullException(nameof(providerFactory)))(this) ?? throw new ArgumentException("Factory return null.", nameof(providerFactory));
+            Provider = (providerFactory ?? throw new ArgumentNullException(nameof(providerFactory)))(this) 
+                ?? throw new ArgumentException("Factory return null.", nameof(providerFactory));
         }
 
 
